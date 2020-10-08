@@ -2,4 +2,4 @@
 
 Go library for freee API
 
-## 会計freee API のクライアントライブラリ
+## 会計 freee API のクライアントライブラリ
