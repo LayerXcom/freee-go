@@ -7,15 +7,14 @@ import (
 	"golang.org/x/oauth2"
 )
 
-type CreateManualJournalParamsDetails []CreateManualJournalParamsDetail
 type CreateManualJournalParams struct {
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
 	// 発生日 (yyyy-mm-dd)
 	IssueDate string `json:"issue_date"`
 	// 決算整理仕訳フラグ（falseまたは未指定の場合: 日常仕訳）
-	Adjustment                       bool `json:"adjustment,omitempty"`
-	CreateManualJournalParamsDetails `json:"details"`
+	Adjustment                       bool                              `json:"adjustment,omitempty"`
+	CreateManualJournalParamsDetails []CreateManualJournalParamsDetail `json:"details"`
 }
 
 type CreateManualJournalParamsDetail struct {
@@ -52,8 +51,8 @@ type CreateManualJournalParamsDetail struct {
 func (c *Client) CreateManualJournal(
 	ctx context.Context, oauth2Token *oauth2.Token,
 	params CreateManualJournalParams,
-) (*CreateManualJournalParamsDetails, *oauth2.Token, error) {
-	var result CreateManualJournalParamsDetails
+) (*CreateManualJournalParamsDetail, *oauth2.Token, error) {
+	var result CreateManualJournalParamsDetail
 
 	tokenSource, err := c.call(ctx, APIPathPartners, http.MethodGet, oauth2Token, nil, params, &result)
 	if err != nil {
