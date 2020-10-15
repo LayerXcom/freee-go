@@ -7,6 +7,10 @@ import (
 	"golang.org/x/oauth2"
 )
 
+const (
+	APIPathManualJournals = "manual_journals"
+)
+
 type CreateManualJournalParams struct {
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
@@ -54,7 +58,7 @@ func (c *Client) CreateManualJournal(
 ) (*CreateManualJournalParamsDetail, *oauth2.Token, error) {
 	var result CreateManualJournalParamsDetail
 
-	tokenSource, err := c.call(ctx, APIPathPartners, http.MethodGet, oauth2Token, nil, params, &result)
+	tokenSource, err := c.call(ctx, APIPathManualJournals, http.MethodPost, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
