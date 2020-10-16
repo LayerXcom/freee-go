@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -64,6 +65,18 @@ func NewClient(config *Config) *Client {
 	}
 }
 
+type ErrorResponse struct {
+	StatusCode string  `json:status_code`
+	Errors     []Error `json:errors`
+}
+
+type Error struct {
+	Type     string    `json:type`
+	Messages []Message `json:messages`
+}
+
+type Message string
+
 func (c *Client) call(ctx context.Context,
 	apiPath string, method string,
 	oauth2Token *oauth2.Token,
@@ -101,6 +114,12 @@ func (c *Client) call(ctx context.Context,
 	defer response.Body.Close()
 
 	var r io.Reader = response.Body
+	fmt.Println(r)
+	code := response.StatusCode
+	if code >= http.StatusBadRequest {
+		var e ErrorResponse
+		return tokenSource, json.NewDecoder(r).Decode(&e)
+	}
 	// r = io.TeeReader(r, os.Stderr)
 	if res == nil {
 		return tokenSource, nil
