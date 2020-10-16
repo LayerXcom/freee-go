@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"strings"
 
 	"golang.org/x/oauth2"
 )
@@ -70,18 +71,19 @@ type ErrorResponse struct {
 	Errors     []Error `json:errors`
 }
 
-type Error struct {
-	Type     string    `json:type`
-	Messages []Message `json:messages`
+func (e *ErrorResponse) Error() string {
+	ems := make([]string, len(e.Errors))
+	for i, e := range e.Errors {
+		m := strings.Join(e.Messages, ",")
+		em := fmt.Sprintf("type: %s, messsage: %s", e.Type, m)
+		ems[i] = em
+	}
+	return strings.Join(ems, ",")
 }
 
-type Message string
-
-// io.Readerをstringに変換
-func StreamToString(stream io.Reader) string {
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(stream)
-	return buf.String()
+type Error struct {
+	Type     string   `json:type`
+	Messages []string `json:messages`
 }
 
 func (c *Client) call(ctx context.Context,
@@ -121,8 +123,6 @@ func (c *Client) call(ctx context.Context,
 	defer response.Body.Close()
 
 	var r io.Reader = response.Body
-	rString := StreamToString(r)
-	fmt.Println(rString)
 	code := response.StatusCode
 	if code >= http.StatusBadRequest {
 		var e ErrorResponse
