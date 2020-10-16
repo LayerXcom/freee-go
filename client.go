@@ -77,6 +77,13 @@ type Error struct {
 
 type Message string
 
+// io.Readerをstringに変換
+func StreamToString(stream io.Reader) string {
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(stream)
+	return buf.String()
+}
+
 func (c *Client) call(ctx context.Context,
 	apiPath string, method string,
 	oauth2Token *oauth2.Token,
@@ -114,7 +121,8 @@ func (c *Client) call(ctx context.Context,
 	defer response.Body.Close()
 
 	var r io.Reader = response.Body
-	fmt.Println(r)
+	rString := StreamToString(r)
+	fmt.Println(rString)
 	code := response.StatusCode
 	if code >= http.StatusBadRequest {
 		var e ErrorResponse
