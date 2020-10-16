@@ -126,8 +126,8 @@ func (c *Client) call(ctx context.Context,
 	code := response.StatusCode
 	if code >= http.StatusBadRequest {
 		var e ErrorResponse
-		_ = json.NewDecoder(r).Decode(&e)
-		return tokenSource, json.NewDecoder(r).Decode(&e)
+		json.NewDecoder(r).Decode(&e)
+		return tokenSource, &e
 	}
 	// r = io.TeeReader(r, os.Stderr)
 	if res == nil {
