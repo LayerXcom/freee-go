@@ -21,7 +21,8 @@ func main() {
 		RefreshToken: os.Getenv("REFRESH_TOKEN"),
 	}
 	client := freee.NewClient(conf)
-	me, token, err := client.GetUsersMe(context.Background(), token, freee.GetUsersMeOpts{})
+	ctx := context.Background()
+	me, token, err := client.GetUsersMe(ctx, token, freee.GetUsersMeOpts{})
 	if err != nil {
 		log.Fatal(err)
 	}
