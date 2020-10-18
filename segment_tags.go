@@ -50,7 +50,7 @@ func (c *Client) GetSegmentTags(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	tokenSource, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID), "tags"), http.MethodGet, oauth2Token, v, opts, &result)
+	tokenSource, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID), "tags"), http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}

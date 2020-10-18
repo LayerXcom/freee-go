@@ -45,7 +45,7 @@ func (c *Client) GetTags(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	tokenSource, err := c.call(ctx, APIPathTags, http.MethodGet, oauth2Token, v, opts, &result)
+	tokenSource, err := c.call(ctx, APIPathTags, http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
