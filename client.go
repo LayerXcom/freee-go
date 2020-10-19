@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
+	"errors"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"path"
-	"strings"
 
 	"golang.org/x/oauth2"
 )
@@ -66,26 +66,6 @@ func NewClient(config *Config) *Client {
 	}
 }
 
-type ErrorResponse struct {
-	StatusCode string  `json:status_code`
-	Errors     []Error `json:errors`
-}
-
-func (e *ErrorResponse) Error() string {
-	ems := make([]string, len(e.Errors))
-	for i, e := range e.Errors {
-		m := strings.Join(e.Messages, ",")
-		em := fmt.Sprintf("type: %s, messsage: %s", e.Type, m)
-		ems[i] = em
-	}
-	return strings.Join(ems, ",")
-}
-
-type Error struct {
-	Type     string   `json:type`
-	Messages []string `json:messages`
-}
-
 func (c *Client) call(ctx context.Context,
 	apiPath string, method string,
 	oauth2Token *oauth2.Token,
@@ -123,13 +103,15 @@ func (c *Client) call(ctx context.Context,
 	defer response.Body.Close()
 
 	var r io.Reader = response.Body
+	// r = io.TeeReader(r, os.Stderr)
 	code := response.StatusCode
 	if code >= http.StatusBadRequest {
-		var e ErrorResponse
-		json.NewDecoder(r).Decode(&e)
-		return tokenSource, &e
+		byt, err := ioutil.ReadAll(r)
+		if err != nil {
+			return tokenSource, err
+		}
+		return tokenSource, errors.New(string(byt))
 	}
-	// r = io.TeeReader(r, os.Stderr)
 	if res == nil {
 		return tokenSource, nil
 	}
