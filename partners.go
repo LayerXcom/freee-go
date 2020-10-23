@@ -2,6 +2,7 @@ package freee
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"path"
@@ -16,6 +17,10 @@ const (
 
 type Partners struct {
 	Partners []Partner `json:"partners"`
+}
+
+type PartnerResponse struct {
+	Partner Partner `json:"partner"`
 }
 
 type Partner struct {
@@ -173,7 +178,7 @@ func (c *Client) CreatePartner(
 	ctx context.Context, oauth2Token *oauth2.Token,
 	params CreatePartnerParams,
 ) (*Partner, *oauth2.Token, error) {
-	var result Partner
+	var result PartnerResponse
 
 	tokenSource, err := c.call(ctx, APIPathPartners, http.MethodPost, oauth2Token, nil, params, &result)
 	if err != nil {
@@ -184,7 +189,10 @@ func (c *Client) CreatePartner(
 	if err != nil {
 		return nil, oauth2Token, err
 	}
-	return &result, token, nil
+	if &result == nil || &result.Partner == nil {
+		return nil, token, errors.New("failed to parse response")
+	}
+	return &result.Partner, token, nil
 }
 
 type UpdatePartnerParams struct {
@@ -227,7 +235,7 @@ func (c *Client) UpdatePartner(
 	ctx context.Context, oauth2Token *oauth2.Token,
 	partnerID uint32, params UpdatePartnerParams,
 ) (*Partner, *oauth2.Token, error) {
-	var result Partner
+	var result PartnerResponse
 
 	tokenSource, err := c.call(ctx, path.Join(APIPathPartners, fmt.Sprint(partnerID)), http.MethodPut, oauth2Token, nil, params, &result)
 	if err != nil {
@@ -238,7 +246,10 @@ func (c *Client) UpdatePartner(
 	if err != nil {
 		return nil, oauth2Token, err
 	}
-	return &result, token, nil
+	if &result == nil || &result.Partner == nil {
+		return nil, token, errors.New("failed to parse response")
+	}
+	return &result.Partner, token, nil
 }
 
 type GetPartnersOpts struct {
