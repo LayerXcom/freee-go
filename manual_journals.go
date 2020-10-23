@@ -16,6 +16,8 @@ type CreateManualJournalParams struct {
 	CompanyID int32 `json:"company_id"`
 	// 発生日 (yyyy-mm-dd)
 	IssueDate string `json:"issue_date"`
+	// 仕訳番号
+	TxnNumber string `json:"txn_number,omitempty"`
 	// 決算整理仕訳フラグ（falseまたは未指定の場合: 日常仕訳）
 	Adjustment                       bool                              `json:"adjustment,omitempty"`
 	CreateManualJournalParamsDetails []CreateManualJournalParamsDetail `json:"details"`
