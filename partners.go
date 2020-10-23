@@ -22,7 +22,7 @@ type Partner struct {
 	// 取引先ID
 	ID int32 `json:"id"`
 	// 取引先コード
-	Code *string `json:"code"`
+	Code *string `json:"code,omitempty"`
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
 	// 取引先名
