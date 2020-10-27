@@ -221,7 +221,7 @@ type UpdatePartnerParams struct {
 	// 担当者 メールアドレス (255文字以内)
 	Email string `json:"email,omitempty"`
 	// 振込元口座ID（一括振込ファイル用）:（walletableのtypeが'bank_account'のidのみ指定できます。また、未設定にする場合は、nullを指定してください。）
-	PayerWalletableId *int32 `json:"payer_walletable_id,omitempty"`
+	PayerWalletableID *int32 `json:"payer_walletable_id,omitempty"`
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
 	TransferFeeHandlingSide      string                                          `json:"transfer_fee_handling_side,omitempty"`
 	AddressAttributes            CreatePartnerParamsAddressAttributes            `json:"address_attributes,omitempty"`
