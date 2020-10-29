@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -83,7 +82,6 @@ func (c *Client) call(ctx context.Context,
 	u.Path = path.Join(u.Path, APIPath1, apiPath)
 	u.RawQuery = queryParams.Encode()
 	var req *http.Request
-	fmt.Println(u.String())
 	if postBody == nil {
 		// headers
 		req, err = http.NewRequest(method, u.String(), nil)
