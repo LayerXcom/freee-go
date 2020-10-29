@@ -81,20 +81,28 @@ func (c *Client) call(ctx context.Context,
 	}
 	u.Path = path.Join(u.Path, APIPath1, apiPath)
 	u.RawQuery = queryParams.Encode()
-	// post payload
-	jsonParams, err := json.Marshal(postBody)
-	if err != nil {
-		return tokenSource, err
+	var req *http.Request
+	if method == http.MethodDelete {
+		// headers
+		req, err = http.NewRequest(method, u.String(), nil)
+		if err != nil {
+			return tokenSource, err
+		}
+	} else {
+		// post payload
+		jsonParams, err := json.Marshal(postBody)
+		if err != nil {
+			return tokenSource, err
+		}
+		// headers
+		req, err = http.NewRequest(method, u.String(), bytes.NewBuffer(jsonParams))
+		if err != nil {
+			return tokenSource, err
+		}
+		req.Header.Set("Content-Type", "application/json")
 	}
-	// headers
-	req, err := http.NewRequest(method, u.String(), bytes.NewBuffer(jsonParams))
-	if err != nil {
-		return tokenSource, err
-	}
-	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set(HeaderXAPIVersion, XAPIVersion20200615)
 	req = req.WithContext(ctx)
-
 	httpClient := oauth2.NewClient(ctx, tokenSource)
 	response, err := httpClient.Do(req)
 	if err != nil {
