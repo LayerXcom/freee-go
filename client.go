@@ -82,7 +82,7 @@ func (c *Client) call(ctx context.Context,
 	u.Path = path.Join(u.Path, APIPath1, apiPath)
 	u.RawQuery = queryParams.Encode()
 	var req *http.Request
-	if postBody == nil {
+	if method == http.MethodDelete {
 		// headers
 		req, err = http.NewRequest(method, u.String(), nil)
 		if err != nil {
