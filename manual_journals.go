@@ -214,7 +214,7 @@ func (c *Client) DestroyManualJournal(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	tokenSource, err := c.call(ctx, path.Join(APIPathManualJournals, "/", fmt.Sprint(journalID)), http.MethodDelete, oauth2Token, v, nil, &result)
+	tokenSource, err := c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(journalID)), http.MethodDelete, oauth2Token, v, nil, &result)
 	if err != nil {
 		return oauth2Token, err
 	}
