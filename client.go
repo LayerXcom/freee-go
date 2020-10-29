@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -86,6 +87,7 @@ func (c *Client) call(ctx context.Context,
 	if err != nil {
 		return tokenSource, err
 	}
+	fmt.Println(u.String())
 	// headers
 	req, err := http.NewRequest(method, u.String(), bytes.NewBuffer(jsonParams))
 	if err != nil {
