@@ -24,7 +24,8 @@ func main() {
 	me, token, err := client.GetUsersMe(ctx, token, freee.GetUsersMeOpts{})
 	if err != nil {
 		if v, ok := err.(*freee.Error); ok {
-			fmt.Println(v.IsAuthorizationRequired)
+			fmt.Printf("StatusCode: %v\n", v.StatusCode)
+			fmt.Printf("IsAuthorizationRequired: %v\n", v.IsAuthorizationRequired)
 		}
 		log.Fatal(err)
 	}
