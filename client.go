@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -112,14 +111,32 @@ func (c *Client) call(ctx context.Context,
 
 	var r io.Reader = response.Body
 	// r = io.TeeReader(r, os.Stderr)
+
+	// Parse freee API errors
 	code := response.StatusCode
 	if code >= http.StatusBadRequest {
 		byt, err := ioutil.ReadAll(r)
 		if err != nil {
-			return tokenSource, err
+			// error occured, but ignored.
 		}
-		return tokenSource, errors.New(string(byt))
+		res := &Error{
+			StatusCode: code,
+			RawError:   string(byt),
+		}
+		// Check if re-authorization is required
+		if code == http.StatusUnauthorized {
+			var e UnauthorizedError
+			if err := json.NewDecoder(bytes.NewReader(byt)).Decode(&e); err != nil {
+				return tokenSource, res
+			}
+			if e.Code == UnauthorizedCodeInvalidAccessToken ||
+				e.Code == UnauthorizedCodeExpiredAccessToken {
+				res.IsAuthorizationRequired = true
+			}
+		}
+		return tokenSource, res
 	}
+
 	if res == nil {
 		return tokenSource, nil
 	}
