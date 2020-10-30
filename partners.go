@@ -280,3 +280,26 @@ func (c *Client) GetPartners(
 	}
 	return &result, token, nil
 }
+
+func (c *Client) DestroyPartner(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	companyID uint32, partnerID int32,
+) (*oauth2.Token, error) {
+	var result interface{}
+
+	v, err := query.Values(nil)
+	if err != nil {
+		return oauth2Token, err
+	}
+	SetCompanyID(&v, companyID)
+	tokenSource, err := c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(partnerID)), http.MethodDelete, oauth2Token, v, nil, &result)
+	if err != nil {
+		return oauth2Token, err
+	}
+
+	token, err := tokenSource.Token()
+	if err != nil {
+		return oauth2Token, err
+	}
+	return token, nil
+}
