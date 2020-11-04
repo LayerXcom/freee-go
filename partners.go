@@ -57,11 +57,11 @@ type Partner struct {
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
 	TransferFeeHandlingSide string `json:"transfer_fee_handling_side,omitempty"`
 	//
-	AddressAttributes PartnerAddressAttributes `json:"address_attributes,omitempty"`
+	AddressAttributes *PartnerAddressAttributes `json:"address_attributes,omitempty"`
 	//
-	DocSettingAttributes PartnerDocSettingAttributes `json:"partner_doc_setting_attributes,omitempty"`
+	DocSettingAttributes *PartnerDocSettingAttributes `json:"partner_doc_setting_attributes,omitempty"`
 	//
-	BankAccountAttributes PartnerBankAccountAttributes `json:"partner_bank_account_attributes,omitempty"`
+	BankAccountAttributes *PartnerBankAccountAttributes `json:"partner_bank_account_attributes,omitempty"`
 }
 
 type PartnerAddressAttributes struct {
