@@ -56,36 +56,51 @@ type Partner struct {
 	PayerWalletableID *int32 `json:"payer_walletable_id,omitempty"`
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
 	TransferFeeHandlingSide string `json:"transfer_fee_handling_side,omitempty"`
+	//
+	AddressAttributes PartnerAddressAttributes `json:"address_attributes,omitempty"`
+	//
+	DocSettingAttributes PartnerDocSettingAttributes `json:"partner_doc_setting_attributes,omitempty"`
+	//
+	BankAccountAttributes PartnerBankAccountAttributes `json:"partner_bank_account_attributes,omitempty"`
+}
+
+type PartnerAddressAttributes struct {
 	// 郵便番号
-	AddressAttributesZipcode *string `json:"address_attributes[zipcode],omitempty"`
+	Zipcode *string `json:"zipcode,omitempty"`
 	// 都道府県コード（0:北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄
-	AddressAttributesPrefectureCode int32 `json:"address_attributes[prefecture_code],omitempty"`
+	PrefectureCode int32 `json:"prefecture_code,omitempty"`
 	// 市区町村・番地
-	AddressAttributesStreetName1 *string `json:"address_attributes[street_name1],omitempty"`
+	StreetName1 *string `json:"street_name1,omitempty"`
 	// 建物名・部屋番号など
-	AddressAttributesStreetName2 *string `json:"address_attributes[street_name2],omitempty"`
+	StreetName2 *string `json:"street_name2,omitempty"`
+}
+
+type PartnerDocSettingAttributes struct {
 	// 請求書送付方法(mail:メール、posting:郵送、mail_and_posting:メールと郵送)
-	PartnerDocSettingAttributesSendingMethod *string `json:"partner_doc_setting_attributes[sending_method],omitempty"`
+	SendingMethod *string `json:"sending_method,omitempty"`
+}
+
+type PartnerBankAccountAttributes struct {
 	// 銀行名
-	PartnerBankAccountAttributesBankName *string `json:"partner_bank_account_attributes[bank_name],omitempty"`
+	BankName *string `json:"bank_name,omitempty"`
 	// 銀行名（カナ）
-	PartnerBankAccountAttributesBankNameKana *string `json:"partner_bank_account_attributes[bank_name_kana],omitempty"`
+	BankNameKana *string `json:"bank_name_kana,omitempty"`
 	// 銀行番号
-	PartnerBankAccountAttributesBankCode *string `json:"partner_bank_account_attributes[bank_code],omitempty"`
+	BankCode *string `json:"bank_code,omitempty"`
 	// 支店名
-	PartnerBankAccountAttributesBranchName *string `json:"partner_bank_account_attributes[branch_name],omitempty"`
+	BranchName *string `json:"branch_name,omitempty"`
 	// 支店名（カナ）
-	PartnerBankAccountAttributesBranchKana *string `json:"partner_bank_account_attributes[branch_kana],omitempty"`
+	BranchKana *string `json:"branch_kana,omitempty"`
 	// 支店番号
-	PartnerBankAccountAttributesBranchCode *string `json:"partner_bank_account_attributes[branch_code],omitempty"`
+	BranchCode *string `json:"branch_code,omitempty"`
 	// 口座種別(ordinary:普通、checking:当座、earmarked:納税準備預金、savings:貯蓄、other:その他)
-	PartnerBankAccountAttributesAccountType *string `json:"partner_bank_account_attributes[account_type],omitempty"`
+	AccountType *string `json:"account_type,omitempty"`
 	// 口座番号
-	PartnerBankAccountAttributesAccountNumber *string `json:"partner_bank_account_attributes[account_number],omitempty"`
+	AccountNumber *string `json:"account_number,omitempty"`
 	// 受取人名（カナ）
-	PartnerBankAccountAttributesAccountName *string `json:"partner_bank_account_attributes[account_name],omitempty"`
+	AccountName *string `json:"account_name,omitempty"`
 	// 受取人名
-	PartnerBankAccountAttributesLongAccountName *string `json:"partner_bank_account_attributes[long_account_name],omitempty"`
+	LongAccountName *string `json:"long_account_name,omitempty"`
 }
 
 type CreatePartnerParams struct {
