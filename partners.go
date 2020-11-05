@@ -13,6 +13,18 @@ import (
 
 const (
 	APIPathPartners = "partners"
+
+	// 口座種別
+	// ordinary:普通
+	BankAccountAccountTypeOrdinary = "ordinary"
+	// checking:当座
+	BankAccountAccountTypeChecking = "checking"
+	// earmarked:納税準備預金
+	BankAccountAccountTypeEarmarked = "earmarked"
+	// savings:貯蓄
+	BankAccountAccountTypeSavings = "savings"
+	// other:その他
+	BankAccountAccountTypeOther = "other"
 )
 
 type Partners struct {
