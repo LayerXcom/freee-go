@@ -63,15 +63,15 @@ type ManualJournalDetails struct {
 	// セグメント１ID
 	Segment1TagID int32 `json:"segment_1_tag_id,omitempty"`
 	// セグメント１ID
-	Segment1TagName int32 `json:"segment_1_tag_name,omitempty"`
+	Segment1TagName *string `json:"segment_1_tag_name,omitempty"`
 	// セグメント２ID
 	Segment2TagID int32 `json:"segment_2_tag_id,omitempty"`
 	// セグメント２
-	Segment2TagName int32 `json:"segment_2_tag_name,omitempty"`
+	Segment2TagName *string `json:"segment_2_tag_name,omitempty"`
 	// セグメント３ID
 	Segment3TagID int32 `json:"segment_3_tag_id,omitempty"`
 	// セグメント３
-	Segment3TagName int32 `json:"segment_3_tag_name,omitempty"`
+	Segment3TagName *string `json:"segment_3_tag_name,omitempty"`
 	// 金額（税込で指定してください）
 	Amount int32 `json:"amount"`
 	// 消費税額（指定しない場合は自動で計算されます）
