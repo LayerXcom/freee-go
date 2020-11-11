@@ -173,16 +173,12 @@ func (c *Client) CreateManualJournal(
 ) (*ManualJournalResponse, *oauth2.Token, error) {
 	var result ManualJournalResponse
 
-	tokenSource, err := c.call(ctx, APIPathManualJournals, http.MethodPost, oauth2Token, nil, params, &result)
+	oauth2Token, err := c.call(ctx, APIPathManualJournals, http.MethodPost, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
 
-	token, err := tokenSource.Token()
-	if err != nil {
-		return nil, oauth2Token, err
-	}
-	return &result, token, nil
+	return &result, oauth2Token, nil
 }
 
 func (c *Client) UpdateManualJournal(
@@ -191,16 +187,12 @@ func (c *Client) UpdateManualJournal(
 ) (*ManualJournalResponse, *oauth2.Token, error) {
 	var result ManualJournalResponse
 
-	tokenSource, err := c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(journalID)), http.MethodPut, oauth2Token, nil, params, &result)
+	oauth2Token, err := c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(journalID)), http.MethodPut, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
 
-	token, err := tokenSource.Token()
-	if err != nil {
-		return nil, oauth2Token, err
-	}
-	return &result, token, nil
+	return &result, oauth2Token, nil
 }
 
 func (c *Client) DestroyManualJournal(
@@ -212,14 +204,10 @@ func (c *Client) DestroyManualJournal(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	tokenSource, err := c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(journalID)), http.MethodDelete, oauth2Token, v, nil, nil)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(journalID)), http.MethodDelete, oauth2Token, v, nil, nil)
 	if err != nil {
 		return oauth2Token, err
 	}
 
-	token, err := tokenSource.Token()
-	if err != nil {
-		return oauth2Token, err
-	}
-	return token, nil
+	return oauth2Token, nil
 }

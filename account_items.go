@@ -65,14 +65,10 @@ func (c *Client) GetAccountItems(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	tokenSource, err := c.call(ctx, APIPathAccountItems, http.MethodGet, oauth2Token, v, nil, &result)
+	oauth2Token, err = c.call(ctx, APIPathAccountItems, http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
 
-	token, err := tokenSource.Token()
-	if err != nil {
-		return nil, oauth2Token, err
-	}
-	return &result, token, nil
+	return &result, oauth2Token, nil
 }

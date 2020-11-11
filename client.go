@@ -70,13 +70,11 @@ func (c *Client) call(ctx context.Context,
 	oauth2Token *oauth2.Token,
 	queryParams url.Values, postBody interface{},
 	res interface{},
-) (oauth2.TokenSource, error) {
-	tokenSource := c.config.Oauth2.TokenSource(ctx, oauth2Token)
-
+) (*oauth2.Token, error) {
 	// url
 	u, err := url.Parse(c.config.APIEndpoint)
 	if err != nil {
-		return tokenSource, err
+		return oauth2Token, err
 	}
 	u.Path = path.Join(u.Path, APIPath1, apiPath)
 	u.RawQuery = queryParams.Encode()
@@ -85,29 +83,36 @@ func (c *Client) call(ctx context.Context,
 		// headers
 		req, err = http.NewRequest(method, u.String(), nil)
 		if err != nil {
-			return tokenSource, err
+			return oauth2Token, err
 		}
 	} else {
 		// post payload
 		jsonParams, err := json.Marshal(postBody)
 		if err != nil {
-			return tokenSource, err
+			return oauth2Token, err
 		}
 		// headers
 		req, err = http.NewRequest(method, u.String(), bytes.NewBuffer(jsonParams))
 		if err != nil {
-			return tokenSource, err
+			return oauth2Token, err
 		}
 		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set(HeaderXAPIVersion, XAPIVersion20200615)
 	req = req.WithContext(ctx)
+	tokenSource := c.config.Oauth2.TokenSource(ctx, oauth2Token)
 	httpClient := oauth2.NewClient(ctx, tokenSource)
 	response, err := httpClient.Do(req)
 	if err != nil {
-		return tokenSource, err
+		return oauth2Token, err
 	}
 	defer response.Body.Close()
+
+	oauth2Token, err = tokenSource.Token()
+	if err != nil {
+		// TODO: logging
+		// error occured, but ignored.
+	}
 
 	var r io.Reader = response.Body
 	// r = io.TeeReader(r, os.Stderr)
@@ -117,6 +122,7 @@ func (c *Client) call(ctx context.Context,
 	if code >= http.StatusBadRequest {
 		byt, err := ioutil.ReadAll(r)
 		if err != nil {
+			// TODO: logging
 			// error occured, but ignored.
 		}
 		res := &Error{
@@ -127,19 +133,19 @@ func (c *Client) call(ctx context.Context,
 		if code == http.StatusUnauthorized {
 			var e UnauthorizedError
 			if err := json.NewDecoder(bytes.NewReader(byt)).Decode(&e); err != nil {
-				return tokenSource, res
+				return oauth2Token, res
 			}
 			if e.Code == UnauthorizedCodeInvalidAccessToken ||
 				e.Code == UnauthorizedCodeExpiredAccessToken {
 				res.IsAuthorizationRequired = true
 			}
 		}
-		return tokenSource, res
+		return oauth2Token, res
 	}
 
 	if res == nil {
-		return tokenSource, nil
+		return oauth2Token, nil
 	}
 
-	return tokenSource, json.NewDecoder(r).Decode(&res)
+	return oauth2Token, json.NewDecoder(r).Decode(&res)
 }

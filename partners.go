@@ -207,19 +207,15 @@ func (c *Client) CreatePartner(
 ) (*Partner, *oauth2.Token, error) {
 	var result PartnerResponse
 
-	tokenSource, err := c.call(ctx, APIPathPartners, http.MethodPost, oauth2Token, nil, params, &result)
+	oauth2Token, err := c.call(ctx, APIPathPartners, http.MethodPost, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
 
-	token, err := tokenSource.Token()
-	if err != nil {
-		return nil, oauth2Token, err
-	}
 	if &result == nil || &result.Partner == nil {
-		return nil, token, errors.New("failed to parse response")
+		return nil, oauth2Token, errors.New("failed to parse response")
 	}
-	return &result.Partner, token, nil
+	return &result.Partner, oauth2Token, nil
 }
 
 type UpdatePartnerParams struct {
@@ -264,19 +260,15 @@ func (c *Client) UpdatePartner(
 ) (*Partner, *oauth2.Token, error) {
 	var result PartnerResponse
 
-	tokenSource, err := c.call(ctx, path.Join(APIPathPartners, fmt.Sprint(partnerID)), http.MethodPut, oauth2Token, nil, params, &result)
+	oauth2Token, err := c.call(ctx, path.Join(APIPathPartners, fmt.Sprint(partnerID)), http.MethodPut, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
 
-	token, err := tokenSource.Token()
-	if err != nil {
-		return nil, oauth2Token, err
-	}
 	if &result == nil || &result.Partner == nil {
-		return nil, token, errors.New("failed to parse response")
+		return nil, oauth2Token, errors.New("failed to parse response")
 	}
-	return &result.Partner, token, nil
+	return &result.Partner, oauth2Token, nil
 }
 
 type GetPartnersOpts struct {
@@ -296,16 +288,12 @@ func (c *Client) GetPartners(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	tokenSource, err := c.call(ctx, APIPathPartners, http.MethodGet, oauth2Token, v, nil, &result)
+	oauth2Token, err = c.call(ctx, APIPathPartners, http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
 
-	token, err := tokenSource.Token()
-	if err != nil {
-		return nil, oauth2Token, err
-	}
-	return &result, token, nil
+	return &result, oauth2Token, nil
 }
 
 func (c *Client) DestroyPartner(
@@ -317,14 +305,10 @@ func (c *Client) DestroyPartner(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	tokenSource, err := c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(partnerID)), http.MethodDelete, oauth2Token, v, nil, nil)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(partnerID)), http.MethodDelete, oauth2Token, v, nil, nil)
 	if err != nil {
 		return oauth2Token, err
 	}
 
-	token, err := tokenSource.Token()
-	if err != nil {
-		return oauth2Token, err
-	}
-	return token, nil
+	return oauth2Token, nil
 }
