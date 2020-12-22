@@ -29,6 +29,8 @@ type AccountItem struct {
 	Shortcut *string `json:"shortcut,omitempty"`
 	// ショートカット2(勘定科目コード) (20文字以内)
 	ShortcutNum *string `json:"shortcut_num,omitempty"`
+	// 税区分コード
+	TaxCode int32 `json:"tax_code"`
 	// デフォルト設定がされている税区分ID
 	DefaultTaxID int32 `json:"default_tax_id,omitempty"`
 	// デフォルト設定がされている税区分コード
