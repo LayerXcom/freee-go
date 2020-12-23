@@ -186,7 +186,7 @@ func NewDealCreateParams(issueDate string, type_ string, companyId int32, detail
 
 func (c *Client) CreateDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	params CreateManualJournalParams,
+	params DealCreateParams,
 ) (*DealCreateResponse, *oauth2.Token, error) {
 	var result DealCreateResponse
 
@@ -207,7 +207,7 @@ func (c *Client) DestroyDeal(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(journalID)), http.MethodDelete, oauth2Token, v, nil, nil)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(journalID)), http.MethodDelete, oauth2Token, v, nil, nil)
 	if err != nil {
 		return oauth2Token, err
 	}
