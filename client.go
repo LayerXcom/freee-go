@@ -14,7 +14,8 @@ import (
 )
 
 const (
-	HeaderXAPIVersion = "X-Api-Version"
+	HeaderXAPIVersion     = "X-Api-Version"
+	HeaderXFreeeRequestID = "X-Freee-Request-ID"
 
 	APIEndpoint         = "https://api.freee.co.jp"
 	APIPath1            = "/api/1"
@@ -34,6 +35,7 @@ var (
 // Config is a setting for freee APIs.
 type Config struct {
 	APIEndpoint string
+	Log         Logger
 	Oauth2      *oauth2.Config
 }
 
@@ -107,11 +109,13 @@ func (c *Client) call(ctx context.Context,
 		return oauth2Token, err
 	}
 	defer response.Body.Close()
+	c.logf("[freee] %s: %s", HeaderXFreeeRequestID, response.Header.Get(HeaderXFreeeRequestID))
+	c.logf("[freee] %s: %v %v%v", response.Status, req.Method, req.URL.Host, req.URL.Path)
 
 	oauth2Token, err = tokenSource.Token()
 	if err != nil {
-		// TODO: logging
 		// error occured, but ignored.
+		c.logf("[freee] OAuth2: %v", err)
 	}
 
 	var r io.Reader = response.Body
@@ -122,8 +126,8 @@ func (c *Client) call(ctx context.Context,
 	if code >= http.StatusBadRequest {
 		byt, err := ioutil.ReadAll(r)
 		if err != nil {
-			// TODO: logging
 			// error occured, but ignored.
+			c.logf("[freee] HTTP response body: %v", err)
 		}
 		res := &Error{
 			StatusCode: code,
@@ -133,6 +137,7 @@ func (c *Client) call(ctx context.Context,
 		if code == http.StatusUnauthorized {
 			var e UnauthorizedError
 			if err := json.NewDecoder(bytes.NewReader(byt)).Decode(&e); err != nil {
+				c.logf("[freee] HTTP response body: %v", err)
 				return oauth2Token, res
 			}
 			if e.Code == UnauthorizedCodeInvalidAccessToken ||
