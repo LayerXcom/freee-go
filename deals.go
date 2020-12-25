@@ -156,11 +156,17 @@ type DealCreateParamsPayments struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDealCreateParams(issueDate string, type_ string, companyID int32, details *[]DealCreateParamsDetails) *DealCreateParams {
+func NewDealCreateParams(issueDate string, type_ string, companyID int32,
+	dueDate string, partnerID int32, partnerCode string, refNumber string,
+	details *[]DealCreateParamsDetails) *DealCreateParams {
 	this := DealCreateParams{}
 	this.IssueDate = issueDate
 	this.Type = type_
 	this.CompanyID = companyID
+	this.DueDate = dueDate
+	this.PartnerID = partnerID
+	this.PartnerCode = partnerCode
+	this.RefNumber = refNumber
 	this.Details = details
 	return &this
 }
