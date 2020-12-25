@@ -20,9 +20,9 @@ type DealCreateResponse struct {
 // DealCreateResponseDeal struct for DealCreateResponseDeal
 type DealCreateResponseDeal struct {
 	// 取引ID
-	Id int32 `json:"id"`
+	ID int32 `json:"id"`
 	// 事業所ID
-	CompanyId int32 `json:"company_id"`
+	CompanyID int32 `json:"company_id"`
 	// 発生日 (yyyy-mm-dd)
 	IssueDate string `json:"issue_date"`
 	// 支払期日 (yyyy-mm-dd)
@@ -34,7 +34,7 @@ type DealCreateResponseDeal struct {
 	// 収支区分 (収入: income, 支出: expense)
 	Type string `json:"type,omitempty"`
 	// 取引先ID
-	PartnerId int32 `json:"partner_id"`
+	PartnerID int32 `json:"partner_id"`
 	// 取引先コード
 	PartnerCode string `json:"partner_code,omitempty"`
 	// 管理番号
@@ -50,23 +50,23 @@ type DealCreateResponseDeal struct {
 // DealCreateResponseDealDetails struct for DealCreateResponseDealDetails
 type DealCreateResponseDealDetails struct {
 	// 取引行ID
-	Id int32 `json:"id"`
+	ID int32 `json:"id"`
 	// 勘定科目ID
-	AccountItemId int32 `json:"account_item_id"`
+	AccountItemID int32 `json:"account_item_id"`
 	// 税区分コード
 	TaxCode int32 `json:"tax_code"`
 	// 品目ID
-	ItemId int32 `json:"item_id,omitempty"`
+	ItemID int32 `json:"item_id,omitempty"`
 	// 部門ID
-	SectionId int32 `json:"section_id,omitempty"`
+	SectionID int32 `json:"section_id,omitempty"`
 	// メモタグID
-	TagIds []int32 `json:"tag_ids,omitempty"`
+	TagIDs []int32 `json:"tag_ids,omitempty"`
 	// セグメント１ID
-	Segment1TagId int32 `json:"segment_1_tag_id,omitempty"`
+	Segment1TagID int32 `json:"segment_1_tag_id,omitempty"`
 	// セグメント２ID
-	Segment2TagId int32 `json:"segment_2_tag_id,omitempty"`
+	Segment2TagID int32 `json:"segment_2_tag_id,omitempty"`
 	// セグメント３ID
-	Segment3TagId int32 `json:"segment_3_tag_id,omitempty"`
+	Segment3TagID int32 `json:"segment_3_tag_id,omitempty"`
 	// 取引金額
 	Amount int32 `json:"amount"`
 	// 消費税額
@@ -80,13 +80,13 @@ type DealCreateResponseDealDetails struct {
 // DealCreateResponseDealPayments struct for DealCreateResponseDealPayments
 type DealCreateResponseDealPayments struct {
 	// 取引行ID
-	Id int32 `json:"id"`
+	ID int32 `json:"id"`
 	// 支払日
 	Date string `json:"date"`
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet, プライベート資金（法人の場合は役員借入金もしくは役員借入金、個人の場合は事業主貸もしくは事業主借）: private_account_item)
 	FromWalletableType string `json:"from_walletable_type,omitempty"`
 	// 口座ID（from_walletable_typeがprivate_account_itemの場合は勘定科目ID）
-	FromWalletableId int32 `json:"from_walletable_id,omitempty"`
+	FromWalletableID int32 `json:"from_walletable_id,omitempty"`
 	// 支払金額
 	Amount int32 `json:"amount"`
 }
@@ -98,11 +98,11 @@ type DealCreateParams struct {
 	// 収支区分 (収入: income, 支出: expense)
 	Type string `json:"type"`
 	// 事業所ID
-	CompanyId int32 `json:"company_id"`
+	CompanyID int32 `json:"company_id"`
 	// 支払期日(yyyy-mm-dd)
 	DueDate string `json:"due_date,omitempty"`
 	// 取引先ID
-	PartnerId int32 `json:"partner_id,omitempty"`
+	PartnerID int32 `json:"partner_id,omitempty"`
 	// 取引先コード
 	PartnerCode string `json:"partner_code,omitempty"`
 	// 管理番号
@@ -111,7 +111,7 @@ type DealCreateParams struct {
 	// 支払行一覧（配列）：未指定の場合、未決済の取引を作成します。
 	Payments *[]DealCreateParamsPayments `json:"payments,omitempty"`
 	// 証憑ファイルID（配列）
-	ReceiptIds []int32 `json:"receipt_ids,omitempty"`
+	ReceiptIDs []int32 `json:"receipt_ids,omitempty"`
 }
 
 // DealCreateParamsDetails struct for DealCreateParamsDetails
@@ -119,21 +119,21 @@ type DealCreateParamsDetails struct {
 	// 税区分コード
 	TaxCode int32 `json:"tax_code"`
 	// 勘定科目ID
-	AccountItemId int32 `json:"account_item_id"`
+	AccountItemID int32 `json:"account_item_id"`
 	// 取引金額（税込で指定してください）
 	Amount int32 `json:"amount"`
 	// 品目ID
-	ItemId int32 `json:"item_id,omitempty"`
+	ItemID int32 `json:"item_id,omitempty"`
 	// 部門ID
-	SectionId int32 `json:"section_id,omitempty"`
+	SectionID int32 `json:"section_id,omitempty"`
 	// メモタグID
-	TagIds []int32 `json:"tag_ids,omitempty"`
+	TagIDs []int32 `json:"tag_ids,omitempty"`
 	// セグメント１ID
-	Segment1TagId int32 `json:"segment_1_tag_id,omitempty"`
+	Segment1TagID int32 `json:"segment_1_tag_id,omitempty"`
 	// セグメント２ID
-	Segment2TagId int32 `json:"segment_2_tag_id,omitempty"`
+	Segment2TagID int32 `json:"segment_2_tag_id,omitempty"`
 	// セグメント３ID
-	Segment3TagId int32 `json:"segment_3_tag_id,omitempty"`
+	Segment3TagID int32 `json:"segment_3_tag_id,omitempty"`
 	// 備考
 	Description string `json:"description,omitempty"`
 	// 消費税額（指定しない場合は自動で計算されます）
@@ -145,7 +145,7 @@ type DealCreateParamsPayments struct {
 	// 支払金額：payments指定時は必須
 	Amount int32 `json:"amount"`
 	// 口座ID（from_walletable_typeがprivate_account_itemの場合は勘定科目ID）：payments指定時は必須
-	FromWalletableId int32 `json:"from_walletable_id"`
+	FromWalletableID int32 `json:"from_walletable_id"`
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet, プライベート資金（法人の場合は役員借入金もしくは役員借入金、個人の場合は事業主貸もしくは事業主借）: private_account_item)：payments指定時は必須
 	FromWalletableType string `json:"from_walletable_type"`
 	// 支払日：payments指定時は必須
@@ -156,11 +156,11 @@ type DealCreateParamsPayments struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDealCreateParams(issueDate string, type_ string, companyId int32, details *[]DealCreateParamsDetails) *DealCreateParams {
+func NewDealCreateParams(issueDate string, type_ string, companyID int32, details *[]DealCreateParamsDetails) *DealCreateParams {
 	this := DealCreateParams{}
 	this.IssueDate = issueDate
 	this.Type = type_
-	this.CompanyId = companyId
+	this.CompanyID = companyID
 	this.Details = details
 	return &this
 }
