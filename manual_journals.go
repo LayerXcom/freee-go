@@ -112,7 +112,7 @@ type CreateManualJournalParamsDetail struct {
 	// 部門ID
 	SectionID int32 `json:"section_id,omitempty"`
 	// メモタグID
-	TagIds []int32 `json:"tag_ids,omitempty"`
+	TagIDs []int32 `json:"tag_ids,omitempty"`
 	// セグメント１ID
 	Segment1TagID uint64 `json:"segment_1_tag_id,omitempty"`
 	// セグメント２ID
@@ -156,7 +156,7 @@ type UpdateManualJournalParamsDetails struct {
 	// 部門ID
 	SectionID int32 `json:"section_id,omitempty"`
 	// メモタグID
-	TagIds []int32 `json:"tag_ids,omitempty"`
+	TagIDs []int32 `json:"tag_ids,omitempty"`
 	// セグメント１ID
 	Segment1TagID int32 `json:"segment_1_tag_id,omitempty"`
 	// セグメント２ID
