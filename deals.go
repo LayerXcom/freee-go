@@ -187,14 +187,14 @@ func (c *Client) CreateDeal(
 
 func (c *Client) DestroyDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, journalID int32,
+	companyID uint32, dealID int32,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(journalID)), http.MethodDelete, oauth2Token, v, nil, nil)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodDelete, oauth2Token, v, nil, nil)
 	if err != nil {
 		return oauth2Token, err
 	}
