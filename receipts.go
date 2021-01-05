@@ -40,7 +40,7 @@ type ReceiptResponse struct {
 
 type Receipt struct {
 	// 証憑ID
-	Id int32 `json:"id"`
+	ID int32 `json:"id"`
 	// ステータス(unconfirmed:確認待ち、confirmed:確認済み、deleted:削除済み、ignored:無視)
 	Status string `json:"status"`
 	// メモ
@@ -60,7 +60,7 @@ type Receipt struct {
 
 type UserCreatedReceipt struct {
 	// ユーザーID
-	Id int32 `json:"id"`
+	ID int32 `json:"id"`
 	// メールアドレス
 	Email string `json:"email"`
 	// 表示名
