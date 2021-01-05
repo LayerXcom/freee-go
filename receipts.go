@@ -3,7 +3,6 @@ package freee
 import (
 	"context"
 	"golang.org/x/oauth2"
-	"net/http"
 )
 
 const (
@@ -71,9 +70,11 @@ type DealResponseDealUser struct {
 func (c *Client) CreateReceipt(
 	ctx context.Context, oauth2Token *oauth2.Token,
 	params ReceiptUpdateParams,
+	receiptName string,
+	receipt []byte,
 ) (*ReceiptResponse, *oauth2.Token, error) {
 	var result ReceiptResponse
-	oauth2Token, err := c.call(ctx, APIPathReceipts, http.MethodPost, oauth2Token, nil, params, &result)
+	oauth2Token, err := c.upload(ctx, APIPathReceipts, oauth2Token, nil, params, receiptName, receipt, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}

@@ -157,7 +157,7 @@ func (c *Client) call(ctx context.Context,
 }
 
 func (c *Client) upload(ctx context.Context,
-	apiPath string, method string,
+	apiPath string,
 	oauth2Token *oauth2.Token,
 	queryParams url.Values,
 	postBody interface{},
@@ -186,7 +186,7 @@ func (c *Client) upload(ctx context.Context,
 		return oauth2Token, err
 	}
 	// request
-	req, err := http.NewRequest(method, u.String(), bytes.NewBuffer(jsonParams))
+	req, err := http.NewRequest(http.MethodPost, u.String(), bytes.NewBuffer(jsonParams))
 	if err != nil {
 		return oauth2Token, err
 	}
