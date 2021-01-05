@@ -1,5 +1,11 @@
 package freee
 
+import (
+	"context"
+	"golang.org/x/oauth2"
+	"net/http"
+)
+
 const (
 	APIPathReceipts = "receipts"
 )
@@ -60,6 +66,18 @@ type DealResponseDealUser struct {
 	Email string `json:"email"`
 	// 表示名
 	DisplayName string `json:"display_name,omitempty"`
+}
+
+func (c *Client) CreateReceipt(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	params ReceiptUpdateParams,
+) (*ReceiptResponse, *oauth2.Token, error) {
+	var result ReceiptResponse
+	oauth2Token, err := c.call(ctx, APIPathReceipts, http.MethodPost, oauth2Token, nil, params, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	return &result, oauth2Token, nil
 }
 
 //type ReceiptCreateResponse struct {
