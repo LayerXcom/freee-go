@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/url"
 	"path"
@@ -152,5 +153,90 @@ func (c *Client) call(ctx context.Context,
 		return oauth2Token, nil
 	}
 
+	return oauth2Token, json.NewDecoder(r).Decode(&res)
+}
+
+func (c *Client) upload(ctx context.Context,
+	apiPath string, method string,
+	oauth2Token *oauth2.Token,
+	queryParams url.Values,
+	postBody interface{},
+	fileName string,
+	file []byte,
+	res interface{},
+) (*oauth2.Token, error) {
+	// url
+	u, err := url.Parse(c.config.APIEndpoint)
+	if err != nil {
+		return oauth2Token, err
+	}
+	u.Path = path.Join(u.Path, APIPath1, apiPath)
+	u.RawQuery = queryParams.Encode()
+	// request parameter
+	jsonParams, err := json.Marshal(postBody)
+	if err != nil {
+		return oauth2Token, err
+	}
+	body := bytes.NewBuffer(jsonParams)
+	// form data
+	mw := multipart.NewWriter(body)
+	fw, err := mw.CreateFormFile("file", fileName)
+	_, err = io.Copy(fw, bytes.NewReader(file))
+	if err != nil {
+		return oauth2Token, err
+	}
+	// request
+	req, err := http.NewRequest(method, u.String(), bytes.NewBuffer(jsonParams))
+	if err != nil {
+		return oauth2Token, err
+	}
+	// header Content-Type
+	contentType := mw.FormDataContentType()
+	err = mw.Close()
+	if err != nil {
+		return oauth2Token, err
+	}
+	req.Header.Set("Content-Type", contentType)
+	req = req.WithContext(ctx)
+	tokenSource := c.config.Oauth2.TokenSource(ctx, oauth2Token)
+	httpClient := oauth2.NewClient(ctx, tokenSource)
+	response, err := httpClient.Do(req)
+	if err != nil {
+		return oauth2Token, err
+	}
+	defer response.Body.Close()
+	c.logf("[freee] %s: %s", HeaderXFreeeRequestID, response.Header.Get(HeaderXFreeeRequestID))
+	c.logf("[freee] %s: %v %v%v", response.Status, req.Method, req.URL.Host, req.URL.Path)
+
+	var r io.Reader = response.Body
+	// Parse freee API errors
+	code := response.StatusCode
+	if code >= http.StatusBadRequest {
+		byt, err := ioutil.ReadAll(r)
+		if err != nil {
+			// error occured, but ignored.
+			c.logf("[freee] HTTP response body: %v", err)
+		}
+		res := &Error{
+			StatusCode: code,
+			RawError:   string(byt),
+		}
+		// Check if re-authorization is required
+		if code == http.StatusUnauthorized {
+			var e UnauthorizedError
+			if err := json.NewDecoder(bytes.NewReader(byt)).Decode(&e); err != nil {
+				c.logf("[freee] HTTP response body: %v", err)
+				return oauth2Token, res
+			}
+			if e.Code == UnauthorizedCodeInvalidAccessToken ||
+				e.Code == UnauthorizedCodeExpiredAccessToken {
+				res.IsAuthorizationRequired = true
+			}
+		}
+		return oauth2Token, res
+	}
+	if res == nil {
+		return oauth2Token, nil
+	}
 	return oauth2Token, json.NewDecoder(r).Decode(&res)
 }
