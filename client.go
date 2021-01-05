@@ -181,7 +181,7 @@ func (c *Client) upload(ctx context.Context,
 	//body := bytes.NewBuffer(jsonParams)
 	// form data
 	mw := multipart.NewWriter(body)
-	fw, err := mw.CreateFormFile("file", fileName)
+	fw, err := mw.CreateFormFile("receipt", fileName)
 	_, err = io.Copy(fw, bytes.NewReader(file))
 	if err != nil {
 		return oauth2Token, err
