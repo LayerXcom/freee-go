@@ -158,7 +158,7 @@ type DealCreateParamsPayments struct {
 // will change when the set of required properties is changed
 func NewDealCreateParams(issueDate string, type_ string, companyID int32,
 	dueDate string, partnerID int32, partnerCode string, refNumber string,
-	details *[]DealCreateParamsDetails) *DealCreateParams {
+	receiptIDs []int32, details *[]DealCreateParamsDetails) *DealCreateParams {
 	this := DealCreateParams{}
 	this.IssueDate = issueDate
 	this.Type = type_
@@ -167,6 +167,7 @@ func NewDealCreateParams(issueDate string, type_ string, companyID int32,
 	this.PartnerID = partnerID
 	this.PartnerCode = partnerCode
 	this.RefNumber = refNumber
+	this.ReceiptIDs = receiptIDs
 	this.Details = details
 	return &this
 }
