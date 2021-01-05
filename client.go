@@ -160,7 +160,7 @@ func (c *Client) upload(ctx context.Context,
 	apiPath string,
 	oauth2Token *oauth2.Token,
 	queryParams url.Values,
-	postBody interface{},
+	postBody map[string]string,
 	fileName string,
 	file []byte,
 	res interface{},
@@ -173,11 +173,12 @@ func (c *Client) upload(ctx context.Context,
 	u.Path = path.Join(u.Path, APIPath1, apiPath)
 	u.RawQuery = queryParams.Encode()
 	// request parameter
-	jsonParams, err := json.Marshal(postBody)
-	if err != nil {
-		return oauth2Token, err
-	}
-	body := bytes.NewBuffer(jsonParams)
+	//jsonParams, err := json.Marshal(postBody)
+	//if err != nil {
+	//	return oauth2Token, err
+	//}
+	body := &bytes.Buffer{}
+	//body := bytes.NewBuffer(jsonParams)
 	// form data
 	mw := multipart.NewWriter(body)
 	fw, err := mw.CreateFormFile("file", fileName)
@@ -185,17 +186,23 @@ func (c *Client) upload(ctx context.Context,
 	if err != nil {
 		return oauth2Token, err
 	}
-	// request
-	req, err := http.NewRequest(http.MethodPost, u.String(), bytes.NewBuffer(jsonParams))
-	if err != nil {
-		return oauth2Token, err
+	for k, v := range postBody {
+		err = mw.WriteField(k, v)
+		if err != nil {
+			return oauth2Token, err
+		}
 	}
-	// header Content-Type
 	contentType := mw.FormDataContentType()
 	err = mw.Close()
 	if err != nil {
 		return oauth2Token, err
 	}
+	// request
+	req, err := http.NewRequest(http.MethodPost, u.String(), body)
+	if err != nil {
+		return oauth2Token, err
+	}
+	// header Content-Type
 	req.Header.Set("Content-Type", contentType)
 	req = req.WithContext(ctx)
 	tokenSource := c.config.Oauth2.TokenSource(ctx, oauth2Token)
