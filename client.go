@@ -172,16 +172,13 @@ func (c *Client) upload(ctx context.Context,
 	}
 	u.Path = path.Join(u.Path, APIPath1, apiPath)
 	u.RawQuery = queryParams.Encode()
-	// request parameter
-	//jsonParams, err := json.Marshal(postBody)
-	//if err != nil {
-	//	return oauth2Token, err
-	//}
 	body := &bytes.Buffer{}
-	//body := bytes.NewBuffer(jsonParams)
 	// form data
 	mw := multipart.NewWriter(body)
 	fw, err := mw.CreateFormFile("receipt", fileName)
+	if err != nil {
+		return oauth2Token, err
+	}
 	_, err = io.Copy(fw, bytes.NewReader(file))
 	if err != nil {
 		return oauth2Token, err
