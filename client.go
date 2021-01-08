@@ -48,8 +48,9 @@ func NewConfig(clientID, clientSecret, redirectURL string) *Config {
 			ClientSecret: clientSecret,
 			RedirectURL:  redirectURL,
 			Endpoint: oauth2.Endpoint{
-				AuthURL:  Oauth2AuthURL,
-				TokenURL: Oauth2TokenURL,
+				AuthURL:   Oauth2AuthURL,
+				TokenURL:  Oauth2TokenURL,
+				AuthStyle: oauth2.AuthStyleInParams,
 			},
 		},
 	}
