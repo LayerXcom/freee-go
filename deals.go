@@ -177,12 +177,22 @@ func (c *Client) CreateDeal(
 	params DealCreateParams,
 ) (*DealCreateResponse, *oauth2.Token, error) {
 	var result DealCreateResponse
-
 	oauth2Token, err := c.call(ctx, APIPathDeals, http.MethodPost, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
+	return &result, oauth2Token, nil
+}
 
+func (c *Client) UpdateDeal(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	params DealCreateParams,
+) (*DealCreateResponse, *oauth2.Token, error) {
+	var result DealCreateResponse
+	oauth2Token, err := c.call(ctx, APIPathDeals, http.MethodPut, oauth2Token, nil, params, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
 	return &result, oauth2Token, nil
 }
 
