@@ -7,6 +7,7 @@ import (
 	"golang.org/x/oauth2"
 	"net/http"
 	"path"
+	"strconv"
 )
 
 const (
@@ -170,6 +171,17 @@ func NewDealCreateParams(issueDate string, type_ string, companyID int32,
 	this.ReceiptIDs = receiptIDs
 	this.Details = details
 	return &this
+}
+
+func (c *Client) GetDeal(
+	ctx context.Context, oauth2Token *oauth2.Token, companyID int32, dealID int32,
+) (*DealCreateResponse, *oauth2.Token, error) {
+	var result DealCreateResponse
+	oauth2Token, err := c.call(ctx, path.Join(APIPathDeals, strconv.Itoa(int(companyID)), strconv.Itoa(int(dealID))), http.MethodPost, oauth2Token, nil, nil, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	return &result, oauth2Token, nil
 }
 
 func (c *Client) CreateDeal(
