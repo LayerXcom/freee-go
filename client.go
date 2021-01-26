@@ -213,6 +213,12 @@ func (c *Client) upload(ctx context.Context,
 	c.logf("[freee] %s: %s", HeaderXFreeeRequestID, response.Header.Get(HeaderXFreeeRequestID))
 	c.logf("[freee] %s: %v %v%v", response.Status, req.Method, req.URL.Host, req.URL.Path)
 
+	oauth2Token, err = tokenSource.Token()
+	if err != nil {
+		// error occured, but ignored.
+		c.logf("[freee] OAuth2: %v", err)
+	}
+
 	var r io.Reader = response.Body
 	// Parse freee API errors
 	code := response.StatusCode
