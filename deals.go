@@ -18,6 +18,10 @@ type DealCreateResponse struct {
 	Deal DealCreateResponseDeal `json:"deal"`
 }
 
+type GetDealOpts struct {
+	CompanyID int32 `url:"company_id,omitempty"`
+}
+
 // DealCreateResponseDeal struct for DealCreateResponseDeal
 type DealCreateResponseDeal struct {
 	// 取引ID
@@ -177,7 +181,13 @@ func (c *Client) GetDeal(
 	ctx context.Context, oauth2Token *oauth2.Token, companyID int32, dealID int32,
 ) (*DealCreateResponse, *oauth2.Token, error) {
 	var result DealCreateResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathDeals, strconv.Itoa(int(companyID)), strconv.Itoa(int(dealID))), http.MethodGet, oauth2Token, nil, nil, &result)
+	var dealOpt GetDealOpts
+	dealOpt.CompanyID = companyID
+	v, err := query.Values(dealOpt)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, strconv.Itoa(int(dealID))), http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
