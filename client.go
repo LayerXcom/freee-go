@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -108,6 +109,17 @@ func (c *Client) call(ctx context.Context,
 	httpClient := oauth2.NewClient(ctx, tokenSource)
 	response, err := httpClient.Do(req)
 	if err != nil {
+		e := &oauth2.RetrieveError{}
+		if errors.As(err, &e) {
+			resp := &Error{
+				RawError:                err.Error(),
+				IsAuthorizationRequired: true,
+			}
+			if e.Response != nil {
+				resp.StatusCode = e.Response.StatusCode
+			}
+			return oauth2Token, resp
+		}
 		return oauth2Token, err
 	}
 	defer response.Body.Close()
@@ -207,6 +219,17 @@ func (c *Client) upload(ctx context.Context,
 	httpClient := oauth2.NewClient(ctx, tokenSource)
 	response, err := httpClient.Do(req)
 	if err != nil {
+		e := &oauth2.RetrieveError{}
+		if errors.As(err, &e) {
+			resp := &Error{
+				RawError:                err.Error(),
+				IsAuthorizationRequired: true,
+			}
+			if e.Response != nil {
+				resp.StatusCode = e.Response.StatusCode
+			}
+			return oauth2Token, resp
+		}
 		return oauth2Token, err
 	}
 	defer response.Body.Close()
