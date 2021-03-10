@@ -3,11 +3,12 @@ package freee
 import (
 	"context"
 	"fmt"
-	"github.com/google/go-querystring/query"
-	"golang.org/x/oauth2"
 	"net/http"
 	"path"
 	"strconv"
+
+	"github.com/google/go-querystring/query"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -25,7 +26,7 @@ type GetDealOpts struct {
 // DealCreateResponseDeal struct for DealCreateResponseDeal
 type DealCreateResponseDeal struct {
 	// 取引ID
-	ID int32 `json:"id"`
+	ID uint64 `json:"id"`
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
 	// 発生日 (yyyy-mm-dd)
@@ -55,7 +56,7 @@ type DealCreateResponseDeal struct {
 // DealCreateResponseDealDetails struct for DealCreateResponseDealDetails
 type DealCreateResponseDealDetails struct {
 	// 取引行ID
-	ID int32 `json:"id"`
+	ID uint64 `json:"id"`
 	// 勘定科目ID
 	AccountItemID int32 `json:"account_item_id"`
 	// 税区分コード
@@ -85,7 +86,7 @@ type DealCreateResponseDealDetails struct {
 // DealCreateResponseDealPayments struct for DealCreateResponseDealPayments
 type DealCreateResponseDealPayments struct {
 	// 取引行ID
-	ID int32 `json:"id"`
+	ID uint64 `json:"id"`
 	// 支払日
 	Date string `json:"date"`
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet, プライベート資金（法人の場合は役員借入金もしくは役員借入金、個人の場合は事業主貸もしくは事業主借）: private_account_item)
