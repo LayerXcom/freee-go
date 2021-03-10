@@ -20,7 +20,7 @@ type ManualJournalResponse struct {
 
 type ManualJournal struct {
 	// 振替伝票ID
-	ID int32 `json:"id"`
+	ID uint64 `json:"id"`
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
 	// 発生日 (yyyy-mm-dd)
@@ -35,7 +35,7 @@ type ManualJournal struct {
 
 type ManualJournalDetails struct {
 	// 貸借行ID
-	ID int32 `json:"id"`
+	ID uint64 `json:"id"`
 	// 貸借(貸方: credit, 借方: debit)
 	EntrySide string `json:"entry_side"`
 	// 勘定科目ID
@@ -136,7 +136,7 @@ type UpdateManualJournalParams struct {
 // ManualJournalUpdateParamsDetails 貸借行一覧（配列）: 貸借合わせて100行まで登録できます。
 type UpdateManualJournalParamsDetails struct {
 	// 貸借行ID: 既存貸借行を更新または削除する場合に指定します。IDを指定しない貸借行は、新規行として扱われ追加されます。
-	ID int32 `json:"id,omitempty"`
+	ID uint64 `json:"id,omitempty"`
 	// 貸借（貸方: credit, 借方: debit）
 	EntrySide string `json:"entry_side"`
 	// 税区分コード
