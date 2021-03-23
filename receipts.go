@@ -2,8 +2,12 @@ package freee
 
 import (
 	"context"
-	"golang.org/x/oauth2"
+	"net/http"
+	"path"
 	"strconv"
+
+	"github.com/google/go-querystring/query"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -34,6 +38,10 @@ func NewCreateReceiptParams(companyID int32, description string, issueDate strin
 	return &this
 }
 
+type Receipts struct {
+	Receipts []Receipt `json:"receipts"`
+}
+
 type ReceiptResponse struct {
 	Receipt Receipt `json:"receipt"`
 }
@@ -58,6 +66,18 @@ type Receipt struct {
 	User    UserCreatedReceipt `json:"user"`
 }
 
+type GetReceiptOpts struct {
+	StartDate        string `url:"start_date"`
+	EndDate          string `url:"end_date"`
+	UserName         string `url:"user_name,omitempty"`
+	Number           int32  `url:"number,omitempty"`
+	CommentType      string `url:"comment_type,omitempty"`
+	CommentImportant bool   `url:"comment_important,omitempty"`
+	Category         string `url:"category,omitempty"`
+	Offset           uint32 `url:"offset,omitempty"`
+	Limit            uint32 `url:"limit,omitempty"`
+}
+
 type UserCreatedReceipt struct {
 	// ユーザーID
 	ID int32 `json:"id"`
@@ -78,6 +98,23 @@ func (c *Client) CreateReceipt(
 	request["issue_date"] = params.IssueDate
 	var result ReceiptResponse
 	oauth2Token, err := c.upload(ctx, APIPathReceipts, oauth2Token, nil, request, receiptName, params.Receipt, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	return &result, oauth2Token, nil
+}
+
+func (c *Client) GetReceipt(
+	ctx context.Context, oauth2Token *oauth2.Token, companyID uint32, receiptID int32,
+) (*ReceiptResponse, *oauth2.Token, error) {
+	var result ReceiptResponse
+
+	v, err := query.Values(nil)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	SetCompanyID(&v, companyID)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathReceipts, strconv.Itoa(int(receiptID))), http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
