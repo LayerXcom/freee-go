@@ -83,8 +83,7 @@ func (c *Client) CreateSection(
 
 func (c *Client) UpdateSection(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	params SectionParams,
-	sectionID uint32,
+	sectionID uint32, params SectionParams,
 ) (*Section, *oauth2.Token, error) {
 	var result SectionResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathSections, fmt.Sprint(sectionID)), http.MethodPut, oauth2Token, nil, params, &result)

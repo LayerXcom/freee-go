@@ -21,6 +21,10 @@ type SegmentTags struct {
 	SegmentTags []SegmentTag `json:"segment_tags"`
 }
 
+type SegmentTagResponse struct {
+	SegmentTag SegmentTag `json:"segment_tag"`
+}
+
 type SegmentTag struct {
 	// セグメントタグID
 	ID int32 `json:"id"`
@@ -32,6 +36,19 @@ type SegmentTag struct {
 	Shortcut1 *string `json:"shortcut1"`
 	// ショートカット２ (20文字以内)
 	Shortcut2 *string `json:"shortcut2"`
+}
+
+type SegmentTagParams struct {
+	// 事業所ID
+	CompanyID int32 `json:"company_id"`
+	// セグメントタグ名 (30文字以内)
+	Name string `json:"name"`
+	// 備考 (30文字以内)
+	Description *string `json:"description,omitempty"`
+	// ショートカット１ (20文字以内)
+	Shortcut1 *string `json:"shortcut1,omitempty"`
+	// ショートカット２ (20文字以内)
+	Shortcut2 *string `json:"shortcut2,omitempty"`
 }
 
 type GetSegmentTagsOpts struct {
@@ -56,4 +73,45 @@ func (c *Client) GetSegmentTags(
 	}
 
 	return &result, oauth2Token, nil
+}
+
+func (c *Client) CreateSegmentTag(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	tagID uint32, params SegmentTagParams,
+) (*SegmentTag, *oauth2.Token, error) {
+	var result SegmentTagResponse
+	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID), "tags"), http.MethodPost, oauth2Token, nil, params, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	return &result.SegmentTag, oauth2Token, nil
+}
+
+func (c *Client) UpdateSegmentTag(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	tagID uint32, params SegmentTagParams,
+) (*SegmentTag, *oauth2.Token, error) {
+	var result SegmentTagResponse
+	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID)), http.MethodPut, oauth2Token, nil, params, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	return &result.SegmentTag, oauth2Token, nil
+}
+
+func (c *Client) DestroySegmentTag(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	companyID uint32, tagID int32,
+) (*oauth2.Token, error) {
+	v, err := query.Values(nil)
+	if err != nil {
+		return oauth2Token, err
+	}
+	SetCompanyID(&v, companyID)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID)), http.MethodDelete, oauth2Token, v, nil, nil)
+	if err != nil {
+		return oauth2Token, err
+	}
+
+	return oauth2Token, nil
 }
