@@ -58,7 +58,8 @@ type GetSegmentTagsOpts struct {
 
 func (c *Client) GetSegmentTags(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, tagID uint32, opts GetSegmentTagsOpts,
+	companyID uint32, segmentID uint32,
+	opts GetSegmentTagsOpts,
 ) (*SegmentTags, *oauth2.Token, error) {
 	var result SegmentTags
 
@@ -67,7 +68,7 @@ func (c *Client) GetSegmentTags(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID), "tags"), http.MethodGet, oauth2Token, v, nil, &result)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags"), http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
@@ -77,10 +78,10 @@ func (c *Client) GetSegmentTags(
 
 func (c *Client) CreateSegmentTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	tagID uint32, params SegmentTagParams,
+	segmentID uint32, params SegmentTagParams,
 ) (*SegmentTag, *oauth2.Token, error) {
 	var result SegmentTagResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID), "tags"), http.MethodPost, oauth2Token, nil, params, &result)
+	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags"), http.MethodPost, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
@@ -89,10 +90,11 @@ func (c *Client) CreateSegmentTag(
 
 func (c *Client) UpdateSegmentTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	tagID uint32, params SegmentTagParams,
+	segmentID uint32, id uint32,
+	params SegmentTagParams,
 ) (*SegmentTag, *oauth2.Token, error) {
 	var result SegmentTagResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID)), http.MethodPut, oauth2Token, nil, params, &result)
+	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags", fmt.Sprint(id)), http.MethodPut, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
@@ -101,14 +103,15 @@ func (c *Client) UpdateSegmentTag(
 
 func (c *Client) DestroySegmentTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, tagID int32,
+	companyID uint32,
+	segmentID uint32, id uint32,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(tagID)), http.MethodDelete, oauth2Token, v, nil, nil)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags", fmt.Sprint(id)), http.MethodDelete, oauth2Token, v, nil, nil)
 	if err != nil {
 		return oauth2Token, err
 	}
