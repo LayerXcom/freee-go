@@ -84,8 +84,7 @@ func (c *Client) CreateTag(
 
 func (c *Client) UpdateTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	params TagParams,
-	tagID uint32,
+	tagID uint32, params TagParams,
 ) (*Tag, *oauth2.Token, error) {
 	var result TagResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathTags, fmt.Sprint(tagID)), http.MethodPut, oauth2Token, nil, params, &result)
