@@ -25,19 +25,6 @@ type CreateReceiptParams struct {
 	Receipt []byte `json:"receipt"`
 }
 
-// NewReceiptUpdateParams instantiates a new ReceiptUpdateParams object
-// This constructor will assign default values to properties that have it defined,
-// and makes sure properties required by API are set, but the set of arguments
-// will change when the set of required properties is changed
-func NewCreateReceiptParams(companyID int32, description string, issueDate string, receipt []byte) *CreateReceiptParams {
-	this := CreateReceiptParams{}
-	this.CompanyID = companyID
-	this.IssueDate = issueDate
-	this.Description = description
-	this.Receipt = receipt
-	return &this
-}
-
 type Receipts struct {
 	Receipts []Receipt `json:"receipts"`
 }

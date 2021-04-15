@@ -158,26 +158,6 @@ type DealCreateParamsPayments struct {
 	Date string `json:"date"`
 }
 
-// NewDealCreateParams instantiates a new DealCreateParams object
-// This constructor will assign default values to properties that have it defined,
-// and makes sure properties required by API are set, but the set of arguments
-// will change when the set of required properties is changed
-func NewDealCreateParams(issueDate string, type_ string, companyID int32,
-	dueDate string, partnerID int32, partnerCode string, refNumber string,
-	receiptIDs []int32, details *[]DealCreateParamsDetails) *DealCreateParams {
-	this := DealCreateParams{}
-	this.IssueDate = issueDate
-	this.Type = type_
-	this.CompanyID = companyID
-	this.DueDate = dueDate
-	this.PartnerID = partnerID
-	this.PartnerCode = partnerCode
-	this.RefNumber = refNumber
-	this.ReceiptIDs = receiptIDs
-	this.Details = details
-	return &this
-}
-
 func (c *Client) GetDeal(
 	ctx context.Context, oauth2Token *oauth2.Token, companyID int32, dealID int32,
 ) (*DealCreateResponse, *oauth2.Token, error) {
