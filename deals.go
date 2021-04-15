@@ -23,7 +23,7 @@ type DealResponse struct {
 
 type GetDealOpts struct {
 	// 取引の債権債務行の表示（without: 表示しない(デフォルト), with: 表示する）
-	Accruals string `url:"accruals"`
+	Accruals string `url:"accruals,omitempty"`
 }
 
 type Deal struct {
