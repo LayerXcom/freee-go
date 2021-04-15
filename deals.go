@@ -18,16 +18,16 @@ const (
 	DealTypeExpense = "expense"
 )
 
-type DealCreateResponse struct {
-	Deal DealCreateResponseDeal `json:"deal"`
+type DealResponse struct {
+	Deal Deal `json:"deal"`
 }
 
 type GetDealOpts struct {
-	CompanyID int32 `url:"company_id,omitempty"`
+	// 取引の債権債務行の表示（without: 表示しない(デフォルト), with: 表示する）
+	Accruals string `url:"accruals"`
 }
 
-// DealCreateResponseDeal struct for DealCreateResponseDeal
-type DealCreateResponseDeal struct {
+type Deal struct {
 	// 取引ID
 	ID uint64 `json:"id"`
 	// 事業所ID
@@ -51,43 +51,38 @@ type DealCreateResponseDeal struct {
 	// 決済状況 (未決済: unsettled, 完了: settled)
 	Status string `json:"status"`
 	// 取引の明細行
-	Details *[]DealCreateResponseDealDetails `json:"details,omitempty"`
+	Details *[]DealDetails `json:"details,omitempty"`
 	// 取引の支払行
-	Payments *[]DealCreateResponseDealPayments `json:"payments,omitempty"`
+	Payments *[]DealPayments `json:"payments,omitempty"`
 }
 
-// DealCreateResponseDealDetails struct for DealCreateResponseDealDetails
-type DealCreateResponseDealDetails struct {
-	// 取引行ID
+type DealDetails struct {
 	ID uint64 `json:"id"`
-	// 勘定科目ID
-	AccountItemID int32 `json:"account_item_id"`
 	// 税区分コード
 	TaxCode int32 `json:"tax_code"`
-	// 品目ID
-	ItemID int32 `json:"item_id,omitempty"`
-	// 部門ID
-	SectionID int32 `json:"section_id,omitempty"`
-	// メモタグID
-	TagIDs []int32 `json:"tag_ids,omitempty"`
-	// セグメント１ID
-	Segment1TagID int32 `json:"segment_1_tag_id,omitempty"`
-	// セグメント２ID
-	Segment2TagID int32 `json:"segment_2_tag_id,omitempty"`
-	// セグメント３ID
-	Segment3TagID int32 `json:"segment_3_tag_id,omitempty"`
-	// 取引金額
+	// 勘定科目ID
+	AccountItemID int32 `json:"account_item_id"`
+	// 取引金額（税込で指定してください）
 	Amount int32 `json:"amount"`
-	// 消費税額
-	Vat int32 `json:"vat"`
+	// 品目ID
+	ItemID *int32 `json:"item_id,omitempty"`
+	// 部門ID
+	SectionID *int32 `json:"section_id,omitempty"`
+	// メモタグID
+	TagIDs *[]int32 `json:"tag_ids,omitempty"`
+	// セグメント１ID
+	Segment1TagID *int32 `json:"segment_1_tag_id,omitempty"`
+	// セグメント２ID
+	Segment2TagID *int32 `json:"segment_2_tag_id,omitempty"`
+	// セグメント３ID
+	Segment3TagID *int32 `json:"segment_3_tag_id,omitempty"`
 	// 備考
-	Description string `json:"description,omitempty"`
-	// 貸借（貸方: credit, 借方: debit）
-	EntrySide string `json:"entry_side"`
+	Description *string `json:"description,omitempty"`
+	// 消費税額（指定しない場合は自動で計算されます）
+	Vat *int32 `json:"vat,omitempty"`
 }
 
-// DealCreateResponseDealPayments struct for DealCreateResponseDealPayments
-type DealCreateResponseDealPayments struct {
+type DealPayments struct {
 	// 取引行ID
 	ID uint64 `json:"id"`
 	// 支払日
@@ -149,7 +144,6 @@ type DealCreateParamsDetails struct {
 	Vat int32 `json:"vat,omitempty"`
 }
 
-// DealCreateParamsPayments struct for DealCreateParamsPayments
 type DealCreateParamsPayments struct {
 	// 支払金額：payments指定時は必須
 	Amount int32 `json:"amount"`
@@ -161,46 +155,93 @@ type DealCreateParamsPayments struct {
 	Date string `json:"date"`
 }
 
+type DealUpdateParams struct {
+	// 発生日 (yyyy-mm-dd)
+	IssueDate string `json:"issue_date"`
+	// 収支区分 (収入: income, 支出: expense)
+	Type string `json:"type"`
+	// 事業所ID
+	CompanyID int32 `json:"company_id"`
+	// 支払期日(yyyy-mm-dd)
+	DueDate *string `json:"due_date,omitempty"`
+	// 取引先ID
+	PartnerID *int32 `json:"partner_id,omitempty"`
+	// 取引先コード
+	PartnerCode *string `json:"partner_code,omitempty"`
+	// 管理番号
+	RefNumber *string                   `json:"ref_number,omitempty"`
+	Details   []DealUpdateParamsDetails `json:"details"`
+	// 証憑ファイルID（配列）
+	ReceiptIDs []int32 `json:"receipt_ids,omitempty"`
+}
+
+type DealUpdateParamsDetails struct {
+	// 取引行ID: 既存取引行を更新する場合に指定します。IDを指定しない取引行は、新規行として扱われ追加されます。また、detailsに含まれない既存の取引行は削除されます。更新後も残したい行は、必ず取引行IDを指定してdetailsに含めてください。
+	ID *uint64 `json:"id,omitempty"`
+	// 税区分コード
+	TaxCode int32 `json:"tax_code"`
+	// 勘定科目ID
+	AccountItemID int32 `json:"account_item_id"`
+	// 取引金額（税込で指定してください）
+	Amount int32 `json:"amount"`
+	// 品目ID
+	ItemID *int32 `json:"item_id,omitempty"`
+	// 部門ID
+	SectionID *int32 `json:"section_id,omitempty"`
+	// メモタグID
+	TagIDs *[]int32 `json:"tag_ids,omitempty"`
+	// セグメント１ID
+	Segment1TagID *int32 `json:"segment_1_tag_id,omitempty"`
+	// セグメント２ID
+	Segment2TagID *int32 `json:"segment_2_tag_id,omitempty"`
+	// セグメント３ID
+	Segment3TagID *int32 `json:"segment_3_tag_id,omitempty"`
+	// 備考
+	Description *string `json:"description,omitempty"`
+	// 消費税額（指定しない場合は自動で計算されます）
+	Vat *int32 `json:"vat,omitempty"`
+}
+
 func (c *Client) GetDeal(
-	ctx context.Context, oauth2Token *oauth2.Token, companyID int32, dealID int32,
-) (*DealCreateResponse, *oauth2.Token, error) {
-	var result DealCreateResponse
-	var dealOpt GetDealOpts
-	dealOpt.CompanyID = companyID
-	v, err := query.Values(dealOpt)
+	ctx context.Context, oauth2Token *oauth2.Token,
+	companyID uint32, dealID int32, opts GetDealOpts,
+) (*Deal, *oauth2.Token, error) {
+	var result DealResponse
+
+	v, err := query.Values(opts)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
+	SetCompanyID(&v, companyID)
 	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, strconv.Itoa(int(dealID))), http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
-	return &result, oauth2Token, nil
+	return &result.Deal, oauth2Token, nil
 }
 
 func (c *Client) CreateDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
 	params DealCreateParams,
-) (*DealCreateResponse, *oauth2.Token, error) {
-	var result DealCreateResponse
+) (*Deal, *oauth2.Token, error) {
+	var result DealResponse
 	oauth2Token, err := c.call(ctx, APIPathDeals, http.MethodPost, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
-	return &result, oauth2Token, nil
+	return &result.Deal, oauth2Token, nil
 }
 
 func (c *Client) UpdateDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	params DealCreateParams,
-	dealID string,
-) (*DealCreateResponse, *oauth2.Token, error) {
-	var result DealCreateResponse
+	dealID string, params DealCreateParams,
+) (*Deal, *oauth2.Token, error) {
+	var result DealResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodPut, oauth2Token, nil, params, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
-	return &result, oauth2Token, nil
+	return &result.Deal, oauth2Token, nil
 }
 
 func (c *Client) DestroyDeal(
