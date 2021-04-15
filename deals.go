@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"path"
-	"strconv"
 
 	"github.com/google/go-querystring/query"
 	"golang.org/x/oauth2"
@@ -204,7 +203,7 @@ type DealUpdateParamsDetails struct {
 
 func (c *Client) GetDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, dealID int32, opts GetDealOpts,
+	companyID uint32, dealID uint64, opts GetDealOpts,
 ) (*Deal, *oauth2.Token, error) {
 	var result DealResponse
 
@@ -213,7 +212,7 @@ func (c *Client) GetDeal(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, strconv.Itoa(int(dealID))), http.MethodGet, oauth2Token, v, nil, &result)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
@@ -234,7 +233,7 @@ func (c *Client) CreateDeal(
 
 func (c *Client) UpdateDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	dealID string, params DealCreateParams,
+	dealID uint64, params DealCreateParams,
 ) (*Deal, *oauth2.Token, error) {
 	var result DealResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodPut, oauth2Token, nil, params, &result)
@@ -246,7 +245,7 @@ func (c *Client) UpdateDeal(
 
 func (c *Client) DestroyDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, dealID int32,
+	companyID uint32, dealID uint64,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {
