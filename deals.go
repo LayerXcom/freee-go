@@ -13,6 +13,9 @@ import (
 
 const (
 	APIPathDeals = "deals"
+
+	DealTypeIncome  = "income"
+	DealTypeExpense = "expense"
 )
 
 type DealCreateResponse struct {
