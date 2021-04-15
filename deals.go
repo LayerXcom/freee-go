@@ -57,7 +57,7 @@ type Deal struct {
 }
 
 type DealDetails struct {
-	ID int32 `json:"id"`
+	ID uint64 `json:"id"`
 	// 税区分コード
 	TaxCode int32 `json:"tax_code"`
 	// 勘定科目ID
@@ -177,7 +177,7 @@ type DealUpdateParams struct {
 
 type DealUpdateParamsDetails struct {
 	// 取引行ID: 既存取引行を更新する場合に指定します。IDを指定しない取引行は、新規行として扱われ追加されます。また、detailsに含まれない既存の取引行は削除されます。更新後も残したい行は、必ず取引行IDを指定してdetailsに含めてください。
-	ID *int32 `json:"id,omitempty"`
+	ID *uint64 `json:"id,omitempty"`
 	// 税区分コード
 	TaxCode int32 `json:"tax_code"`
 	// 勘定科目ID
