@@ -34,25 +34,29 @@ type Deal struct {
 	// 発生日 (yyyy-mm-dd)
 	IssueDate string `json:"issue_date"`
 	// 支払期日 (yyyy-mm-dd)
-	DueDate string `json:"due_date,omitempty"`
+	DueDate *string `json:"due_date,omitempty"`
 	// 金額
 	Amount int32 `json:"amount"`
 	// 支払金額
-	DueAmount int32 `json:"due_amount,omitempty"`
+	DueAmount *int32 `json:"due_amount,omitempty"`
 	// 収支区分 (収入: income, 支出: expense)
-	Type string `json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 	// 取引先ID
 	PartnerID int32 `json:"partner_id"`
 	// 取引先コード
-	PartnerCode string `json:"partner_code,omitempty"`
+	PartnerCode *string `json:"partner_code,omitempty"`
 	// 管理番号
-	RefNumber string `json:"ref_number,omitempty"`
+	RefNumber *string `json:"ref_number,omitempty"`
 	// 決済状況 (未決済: unsettled, 完了: settled)
 	Status string `json:"status"`
 	// 取引の明細行
 	Details *[]DealDetails `json:"details,omitempty"`
+	// 取引の+更新行
+	Renews *[]DealRenews `json:"renews,omitempty"`
 	// 取引の支払行
 	Payments *[]DealPayments `json:"payments,omitempty"`
+	// 証憑ファイル
+	Receipts *[]DealReceipts `json:"receipts,omitempty"`
 }
 
 type DealDetails struct {
@@ -81,6 +85,19 @@ type DealDetails struct {
 	Vat *int32 `json:"vat,omitempty"`
 }
 
+type DealRenews struct {
+	// +更新行ID
+	ID uint64 `json:"id"`
+	// 更新日 (yyyy-mm-dd)
+	UpdateDate string `json:"update_date"`
+	// +更新の対象行ID
+	RenewTargetId int32 `json:"renew_target_id"`
+	// +更新の対象行タイプ
+	RenewTargetType string `json:"renew_target_type"`
+	// +更新の明細行一覧（配列）
+	Details []DealDetails `json:"details"`
+}
+
 type DealPayments struct {
 	// 取引行ID
 	ID uint64 `json:"id"`
@@ -94,7 +111,35 @@ type DealPayments struct {
 	Amount int32 `json:"amount"`
 }
 
-// DealCreateParams struct for DealCreateParams
+type DealReceipts struct {
+	// 証憑ID
+	ID int32 `json:"id"`
+	// ステータス(unconfirmed:確認待ち、confirmed:確認済み、deleted:削除済み、ignored:無視)
+	Status string `json:"status"`
+	// メモ
+	Description *string `json:"description,omitempty"`
+	// MIMEタイプ
+	MimeType string `json:"mime_type"`
+	// 発生日
+	IssueDate *string `json:"issue_date,omitempty"`
+	// アップロード元種別
+	Origin string `json:"origin"`
+	// 作成日時（ISO8601形式）
+	CreatedAt string `json:"created_at"`
+	// ファイルのダウンロードURL（freeeにログインした状態でのみ閲覧可能です。） <br> <br> file_srcは廃止予定の属性になります。<br> file_srcに替わり、証憑ファイルのダウンロード APIをご利用ください。<br> 証憑ファイルのダウンロードAPIを利用することで、以下のようになります。 <ul>   <li>アプリケーション利用者はfreee APIアプリケーションにログインしていれば、証憑ダウンロード毎にfreeeに改めてログインすることなくファイルが参照できるようになります。</li> </ul>
+	FileSrc string   `json:"file_src"`
+	User    DealUser `json:"user"`
+}
+
+type DealUser struct {
+	// ユーザーID
+	ID int32 `json:"id"`
+	// メールアドレス
+	Email string `json:"email"`
+	// 表示名
+	DisplayName *string `json:"display_name,omitempty"`
+}
+
 type DealCreateParams struct {
 	// 発生日 (yyyy-mm-dd)
 	IssueDate string `json:"issue_date"`
@@ -103,21 +148,20 @@ type DealCreateParams struct {
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
 	// 支払期日(yyyy-mm-dd)
-	DueDate string `json:"due_date,omitempty"`
+	DueDate *string `json:"due_date,omitempty"`
 	// 取引先ID
-	PartnerID int32 `json:"partner_id,omitempty"`
+	PartnerID *int32 `json:"partner_id,omitempty"`
 	// 取引先コード
-	PartnerCode string `json:"partner_code,omitempty"`
+	PartnerCode *string `json:"partner_code,omitempty"`
 	// 管理番号
-	RefNumber string                     `json:"ref_number,omitempty"`
-	Details   *[]DealCreateParamsDetails `json:"details"`
+	RefNumber *string                   `json:"ref_number,omitempty"`
+	Details   []DealCreateParamsDetails `json:"details"`
 	// 支払行一覧（配列）：未指定の場合、未決済の取引を作成します。
 	Payments *[]DealCreateParamsPayments `json:"payments,omitempty"`
 	// 証憑ファイルID（配列）
-	ReceiptIDs []int32 `json:"receipt_ids,omitempty"`
+	ReceiptIDs *[]int32 `json:"receipt_ids,omitempty"`
 }
 
-// DealCreateParamsDetails struct for DealCreateParamsDetails
 type DealCreateParamsDetails struct {
 	// 税区分コード
 	TaxCode int32 `json:"tax_code"`
@@ -126,21 +170,21 @@ type DealCreateParamsDetails struct {
 	// 取引金額（税込で指定してください）
 	Amount int32 `json:"amount"`
 	// 品目ID
-	ItemID int32 `json:"item_id,omitempty"`
+	ItemID *int32 `json:"item_id,omitempty"`
 	// 部門ID
-	SectionID int32 `json:"section_id,omitempty"`
+	SectionID *int32 `json:"section_id,omitempty"`
 	// メモタグID
-	TagIDs []int32 `json:"tag_ids,omitempty"`
+	TagIDs *[]int32 `json:"tag_ids,omitempty"`
 	// セグメント１ID
-	Segment1TagID int32 `json:"segment_1_tag_id,omitempty"`
+	Segment1TagID *int32 `json:"segment_1_tag_id,omitempty"`
 	// セグメント２ID
-	Segment2TagID int32 `json:"segment_2_tag_id,omitempty"`
+	Segment2TagID *int32 `json:"segment_2_tag_id,omitempty"`
 	// セグメント３ID
-	Segment3TagID int32 `json:"segment_3_tag_id,omitempty"`
+	Segment3TagID *int32 `json:"segment_3_tag_id,omitempty"`
 	// 備考
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 	// 消費税額（指定しない場合は自動で計算されます）
-	Vat int32 `json:"vat,omitempty"`
+	Vat *int32 `json:"vat,omitempty"`
 }
 
 type DealCreateParamsPayments struct {
@@ -233,7 +277,7 @@ func (c *Client) CreateDeal(
 
 func (c *Client) UpdateDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	dealID uint64, params DealCreateParams,
+	dealID uint64, params DealUpdateParams,
 ) (*Deal, *oauth2.Token, error) {
 	var result DealResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodPut, oauth2Token, nil, params, &result)
