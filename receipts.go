@@ -79,13 +79,13 @@ func (c *Client) CreateReceipt(
 	params CreateReceiptParams,
 	receiptName string,
 ) (*ReceiptResponse, *oauth2.Token, error) {
-	request := map[string]string{
+	postBody := map[string]string{
 		"company_id":  fmt.Sprint(params.CompanyID),
 		"description": params.Description,
 		"issue_date":  params.IssueDate,
 	}
 	var result ReceiptResponse
-	oauth2Token, err := c.postFiles(ctx, APIPathReceipts, http.MethodPost, oauth2Token, nil, request, receiptName, params.Receipt, &result)
+	oauth2Token, err := c.postFiles(ctx, APIPathReceipts, http.MethodPost, oauth2Token, nil, postBody, receiptName, params.Receipt, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
