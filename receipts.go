@@ -2,9 +2,9 @@ package freee
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"path"
-	"strconv"
 
 	"github.com/google/go-querystring/query"
 	"golang.org/x/oauth2"
@@ -79,12 +79,13 @@ func (c *Client) CreateReceipt(
 	params CreateReceiptParams,
 	receiptName string,
 ) (*ReceiptResponse, *oauth2.Token, error) {
-	request := map[string]string{}
-	request["company_id"] = strconv.Itoa(int(params.CompanyID))
-	request["description"] = params.Description
-	request["issue_date"] = params.IssueDate
+	request := map[string]string{
+		"company_id":  fmt.Sprint(params.CompanyID),
+		"description": params.Description,
+		"issue_date":  params.IssueDate,
+	}
 	var result ReceiptResponse
-	oauth2Token, err := c.upload(ctx, APIPathReceipts, oauth2Token, nil, request, receiptName, params.Receipt, &result)
+	oauth2Token, err := c.postFiles(ctx, APIPathReceipts, http.MethodPost, oauth2Token, nil, request, receiptName, params.Receipt, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
@@ -101,7 +102,7 @@ func (c *Client) GetReceipt(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathReceipts, strconv.Itoa(int(receiptID))), http.MethodGet, oauth2Token, v, nil, &result)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathReceipts, fmt.Sprint(receiptID)), http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
