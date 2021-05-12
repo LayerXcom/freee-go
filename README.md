@@ -46,6 +46,7 @@ func main() {
 ## References
 
 - [会計 API リファレンス](https://developer.freee.co.jp/docs/accounting/reference#/)
+- [freee API のGoクライアントライブラリを公開しました - LayerX エンジニアブログ](https://tech.layerx.co.jp/entry/2021/05/12/110000)
 
 ## APIs
 
