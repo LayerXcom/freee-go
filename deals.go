@@ -91,7 +91,7 @@ type DealRenews struct {
 	// 更新日 (yyyy-mm-dd)
 	UpdateDate string `json:"update_date"`
 	// +更新の対象行ID
-	RenewTargetId int32 `json:"renew_target_id"`
+	RenewTargetId int64 `json:"renew_target_id"`
 	// +更新の対象行タイプ
 	RenewTargetType string `json:"renew_target_type"`
 	// +更新の明細行一覧（配列）
