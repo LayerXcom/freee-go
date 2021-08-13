@@ -1,5 +1,7 @@
 package freee
 
+import "encoding/json"
+
 const (
 	UnauthorizedCodeInvalidAccessToken      = "invalid_access_token"
 	UnauthorizedCodeExpiredAccessToken      = "expired_access_token"
@@ -22,4 +24,41 @@ type Error struct {
 
 func (e *Error) Error() string {
 	return e.RawError
+}
+
+func (e *Error) Messages() []string {
+	messages, _ := ExtractFreeeErrorMessage(e.RawError)
+	return messages
+}
+
+type FreeErrorMessageDetail struct {
+	Messages []string `json:"messages"`
+}
+type FreeeErrorMessage struct {
+	ErrorDescription string                   `json:"error_description"`
+	Message          string                   `json:"message"`
+	ErrorDetails     []FreeErrorMessageDetail `json:"errors"`
+}
+
+func ExtractFreeeErrorMessage(errorString string) ([]string, error) {
+	var messages []string
+
+	var errorMessage FreeeErrorMessage
+	if err := json.Unmarshal([]byte(errorString), &errorMessage); err != nil {
+		return messages, err
+	}
+
+	if errorMessage.ErrorDescription != "" {
+		messages = append(messages, errorMessage.ErrorDescription)
+	}
+	if errorMessage.Message != "" {
+		messages = append(messages, errorMessage.Message)
+	}
+	for _, errorDetail := range errorMessage.ErrorDetails {
+		if len(errorDetail.Messages) > 0 {
+			messages = append(messages, errorDetail.Messages...)
+		}
+	}
+
+	return messages, nil
 }
