@@ -41,7 +41,6 @@ func TestExtractFreeeErrorMessage(t *testing.T) {
 		i := i
 		data := data
 		num := num
-		t := t
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
 			t.Parallel()
 			messages, err := ExtractFreeeErrorMessage(data)
@@ -63,7 +62,6 @@ func TestExtractFreeeInvalidErrorMessage(t *testing.T) {
 	for i, data := range testInvalidJsonData {
 		i := i
 		data := data
-		t := t
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
 			t.Parallel()
 			messages, err := ExtractFreeeErrorMessage(data)
@@ -86,7 +84,6 @@ func TestErrorMessages(t *testing.T) {
 		i := i
 		data := data
 		num := num
-		t := t
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
 			t.Parallel()
 			err := &Error{
@@ -109,7 +106,6 @@ func TestInvalidErrorMessages(t *testing.T) {
 	for i, data := range testInvalidJsonData {
 		i := i
 		data := data
-		t := t
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
 			t.Parallel()
 			err := &Error{
