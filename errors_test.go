@@ -78,3 +78,50 @@ func TestExtractFreeeInvalidErrorMessage(t *testing.T) {
 		})
 	}
 }
+
+func TestErrorMessages(t *testing.T) {
+	i := 0
+	t.Parallel()
+	for data, num := range testJsonData {
+		i := i
+		data := data
+		num := num
+		t := t
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			t.Parallel()
+			err := &Error{
+				StatusCode:              400,
+				RawError:                data,
+				IsAuthorizationRequired: false,
+			}
+			messages := err.Messages()
+			if num != len(messages) {
+				t.Fatalf("unmatch message nums : %d, %d", num, len(messages))
+			}
+			t.Logf("message len = %d\n", len(messages))
+		})
+		i++
+	}
+}
+
+func TestInvalidErrorMessages(t *testing.T) {
+	t.Parallel()
+	for i, data := range testInvalidJsonData {
+		i := i
+		data := data
+		t := t
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			t.Parallel()
+			err := &Error{
+				StatusCode:              400,
+				RawError:                data,
+				IsAuthorizationRequired: false,
+			}
+			messages := err.Messages()
+			if len(messages) > 0 {
+				t.Fatalf("unmatch message nums : %d", len(messages))
+			}
+			t.Logf("message len = %d\n", len(messages))
+		})
+	}
+}
