@@ -171,6 +171,13 @@ func (c *Client) do(
 			}
 			return oauth2Token, resp
 		}
+		errURL := &url.Error{}
+		if errors.As(err, &errURL) {
+			err = errURL.Unwrap()
+			if v, ok := err.(*Error); ok {
+				err = v
+			}
+		}
 		return oauth2Token, err
 	}
 	defer response.Body.Close()
