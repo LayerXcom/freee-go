@@ -23,6 +23,7 @@ var testJsonData = map[string]int{
 	"{\"status_code\":400,\"errors\":[{\"type\":\"status\",\"messages\":[\"不正なリクエストです。\"]},{\"type\":\"validation\",\"messages\":[\"貸借が一致していません。\",\"貸借が一致していません。\",\"決済に明細が登録されている取引は金額を変更することができません。変更する場合は、該当の明細の取引登録を解除してください\",\"振込が成功している取引の金額、取引先は変更できません。新しい取引を作成してください。\",\"取引単位は不正な値です。\"]}]}": 6,
 	"{\"status_code\":401,\"errors\":[{\"type\":\"status\",\"messages\":[\"アクセス権限がありません。\",\"company_admin\",\"api/v1/segment_tags\",\"index_division_3\",\"このAPIにアクセスしたい場合、事業所の管理者にご確認ください。\"],\"codes\":[\"user_do_not_have_permission\"]}]}":                                                          5,
 	"{\"message\": \"ログインをして下さい\",\"code\": \"invalid_access_token\"}": 1,
+	"{\"messages\":[\"部門名はすでに存在します。\"]}":                               1,
 	"{\"aaaaaa\":12345}": 0,
 	"{}":                 0,
 }
