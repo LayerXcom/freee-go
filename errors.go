@@ -37,6 +37,7 @@ type FreeErrorMessageDetail struct {
 type FreeeErrorMessage struct {
 	ErrorDescription string                   `json:"error_description"`
 	Message          string                   `json:"message"`
+	Messages         []string                 `json:"messages"`
 	ErrorDetails     []FreeErrorMessageDetail `json:"errors"`
 }
 
@@ -53,6 +54,9 @@ func ExtractFreeeErrorMessage(errorString string) ([]string, error) {
 	}
 	if errorMessage.Message != "" {
 		messages = append(messages, errorMessage.Message)
+	}
+	for _, msg := range errorMessage.Messages {
+		messages = append(messages, msg)
 	}
 	for _, errorDetail := range errorMessage.ErrorDetails {
 		if len(errorDetail.Messages) > 0 {
