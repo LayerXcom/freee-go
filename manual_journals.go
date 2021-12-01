@@ -75,7 +75,7 @@ type ManualJournalDetails struct {
 	// 金額（税込で指定してください）
 	Amount int32 `json:"amount"`
 	// 消費税額（指定しない場合は自動で計算されます）
-	Vat int32 `json:"vat"`
+	Vat *int32 `json:"vat,omitempty"`
 	// 備考
 	Description string `json:"description"`
 }
@@ -102,7 +102,7 @@ type CreateManualJournalParamsDetail struct {
 	// 取引金額（税込で指定してください）
 	Amount uint64 `json:"amount"`
 	// 消費税額（指定しない場合は自動で計算されます）
-	Vat int32 `json:"vat,omitempty"`
+	Vat *int32 `json:"vat,omitempty"`
 	// 取引先ID
 	PartnerID int32 `json:"partner_id,omitempty"`
 	// 取引先コード
@@ -146,7 +146,7 @@ type UpdateManualJournalParamsDetails struct {
 	// 取引金額（税込で指定してください）
 	Amount int32 `json:"amount"`
 	// 消費税額（指定しない場合は自動で計算されます）
-	Vat int32 `json:"vat,omitempty"`
+	Vat *int32 `json:"vat,omitempty"`
 	// 取引先ID
 	PartnerID int32 `json:"partner_id,omitempty"`
 	// 取引先コード
