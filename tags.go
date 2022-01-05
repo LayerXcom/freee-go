@@ -62,8 +62,7 @@ func (c *Client) GetTags(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, APIPathTags, http.MethodGet, oauth2Token, v, nil, &result)
-	if err != nil {
+	if err = c.call(ctx, APIPathTags, http.MethodGet, oauth2Token, v, nil, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 
@@ -75,8 +74,7 @@ func (c *Client) CreateTag(
 	params TagParams,
 ) (*Tag, *oauth2.Token, error) {
 	var result TagResponse
-	oauth2Token, err := c.call(ctx, APIPathTags, http.MethodPost, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, APIPathTags, http.MethodPost, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.Tag, oauth2Token, nil
@@ -87,8 +85,7 @@ func (c *Client) UpdateTag(
 	tagID uint32, params TagParams,
 ) (*Tag, *oauth2.Token, error) {
 	var result TagResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathTags, fmt.Sprint(tagID)), http.MethodPut, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, path.Join(APIPathTags, fmt.Sprint(tagID)), http.MethodPut, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.Tag, oauth2Token, nil
@@ -103,8 +100,7 @@ func (c *Client) DestroyTag(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathTags, fmt.Sprint(tagID)), http.MethodDelete, oauth2Token, v, nil, nil)
-	if err != nil {
+	if err = c.call(ctx, path.Join(APIPathTags, fmt.Sprint(tagID)), http.MethodDelete, oauth2Token, v, nil, nil); err != nil {
 		return oauth2Token, err
 	}
 
