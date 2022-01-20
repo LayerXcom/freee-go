@@ -82,6 +82,25 @@ func (c *Client) CreateTag(
 	return &result.Tag, oauth2Token, nil
 }
 
+func (c *Client) GetTag(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	companyID uint32, tagID uint32, opts GetTagsOpts,
+) (*Tags, *oauth2.Token, error) {
+	var result Tags
+
+	v, err := query.Values(opts)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	SetCompanyID(&v, companyID)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathTags, fmt.Sprint(tagID)), http.MethodGet, oauth2Token, v, nil, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+
+	return &result, oauth2Token, nil
+}
+
 func (c *Client) UpdateTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
 	tagID uint32, params TagParams,
