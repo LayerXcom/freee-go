@@ -29,17 +29,17 @@ type DealResponse struct {
 
 type GetDealOpts struct {
 	// 取引先ID
-	PartnerID int32 `json:"partner_id,omitempty" url:"partner_id,omitempty"`
+	PartnerID int32 `url:"partner_id,omitempty"`
 	// 決済状況 (未決済: unsettled, 完了: settled)
-	Status string `json:"status,omitempty" url:"status,omitempty"`
+	Status string `url:"status,omitempty"`
 	// 収支区分 (収入: income, 支出: expense)
-	Type string `json:"type,omitempty" url:"type,omitempty"`
+	Type string `url:"type,omitempty"`
 	// 発生日で絞込：開始日(yyyy-mm-dd)
-	StartIssueDate string `json:"start_issue_date,omitempty" url:"start_issue_date,omitempty"`
+	StartIssueDate string `url:"start_issue_date,omitempty"`
 	// 発生日で絞込：終了日(yyyy-mm-dd)
-	EndIssueDate string `json:"end_issue_date,omitempty" url:"end_issue_date,omitempty"`
+	EndIssueDate string `url:"end_issue_date,omitempty"`
 	// 取引の債権債務行の表示（without: 表示しない(デフォルト), with: 表示する）
-	Accruals string `url:"accruals,omitempty" url:"accruals,omitempty"`
+	Accruals string `url:"accruals,omitempty"`
 }
 
 type Deal struct {
