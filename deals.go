@@ -15,13 +15,29 @@ const (
 
 	DealTypeIncome  = "income"
 	DealTypeExpense = "expense"
+	DealStatusSettled = "settled"
+	DealStatusUnsettled = "unsettled"
 )
+
+type DealsResponse struct {
+	Deals []Deal `json:"deals"`
+}
 
 type DealResponse struct {
 	Deal Deal `json:"deal"`
 }
 
 type GetDealOpts struct {
+	// 取引先ID
+	PartnerID int32 `url:"partner_id,omitempty"`
+	// 決済状況 (未決済: unsettled, 完了: settled)
+	Status string `url:"status,omitempty"`
+	// 収支区分 (収入: income, 支出: expense)
+	Type string `url:"type,omitempty"`
+	// 発生日で絞込：開始日(yyyy-mm-dd)
+	StartIssueDate string `url:"start_issue_date,omitempty"`
+	// 発生日で絞込：終了日(yyyy-mm-dd)
+	EndIssueDate string `url:"end_issue_date,omitempty"`
 	// 取引の債権債務行の表示（without: 表示しない(デフォルト), with: 表示する）
 	Accruals string `url:"accruals,omitempty"`
 }
@@ -244,6 +260,24 @@ type DealUpdateParamsDetails struct {
 	// 消費税額（指定しない場合は自動で計算されます）
 	Vat *int32 `json:"vat,omitempty"`
 }
+
+func (c *Client) GetDeals(ctx context.Context, oauth2Token *oauth2.Token,
+	companyID uint32, opts GetDealOpts) (*DealsResponse, *oauth2.Token, error) {
+	var result DealsResponse
+
+	v, err := query.Values(opts)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	SetCompanyID(&v, companyID)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals), http.MethodGet, oauth2Token, v, nil, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+
+	return &result, oauth2Token, nil
+}
+
 
 func (c *Client) GetDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
