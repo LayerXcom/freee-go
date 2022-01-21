@@ -13,9 +13,9 @@ import (
 const (
 	APIPathDeals = "deals"
 
-	DealTypeIncome  = "income"
-	DealTypeExpense = "expense"
-	DealStatusSettled = "settled"
+	DealTypeIncome      = "income"
+	DealTypeExpense     = "expense"
+	DealStatusSettled   = "settled"
 	DealStatusUnsettled = "unsettled"
 )
 
@@ -40,6 +40,8 @@ type GetDealOpts struct {
 	EndIssueDate string `url:"end_issue_date,omitempty"`
 	// 取引の債権債務行の表示（without: 表示しない(デフォルト), with: 表示する）
 	Accruals string `url:"accruals,omitempty"`
+	Offset   uint32 `url:"offset,omitempty"`
+	Limit    uint32 `url:"limit,omitempty"`
 }
 
 type Deal struct {
@@ -277,7 +279,6 @@ func (c *Client) GetDeals(ctx context.Context, oauth2Token *oauth2.Token,
 
 	return &result, oauth2Token, nil
 }
-
 
 func (c *Client) GetDeal(
 	ctx context.Context, oauth2Token *oauth2.Token,
