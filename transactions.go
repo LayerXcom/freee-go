@@ -55,7 +55,7 @@ type WalletTxn struct {
 	// 取引日（yyyy-mm-dd）
 	Date string `json:"date"`
 	// 取引金額
-	Amount uint32 `json:"amount"`
+	Amount int32 `json:"amount"`
 	// 未決済金額
 	DueAmount int32 `json:"due_amount"`
 	// 残高
@@ -65,7 +65,7 @@ type WalletTxn struct {
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet)
 	WalletableType string `json:"walletable_type"`
 	// 口座ID
-	WalletableID uint32 `json:"walletable_id"`
+	WalletableID uint64 `json:"walletable_id"`
 	// 取引内容
 	Description string `json:"description"`
 	// 明細のステータス（消込待ち: 1, 消込済み: 2, 無視: 3, 消込中: 4）
