@@ -237,9 +237,9 @@ func main() {
 
 ### 明細
 
-- [ ] GET /api/1/wallet_txns 明細一覧の取得
+- [x] GET /api/1/wallet_txns 明細一覧の取得
 - [ ] POST /api/1/wallet_txns 明細の作成
-- [ ] GET /api/1/wallet_txns/{id} 明細の取得
+- [x] GET /api/1/wallet_txns/{id} 明細の取得
 - [ ] DELETE /api/1/wallet_txns/{id} 明細の削除
 
 ### 口座
