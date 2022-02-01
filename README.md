@@ -244,8 +244,8 @@ func main() {
 
 ### 口座
 
-- [ ] GET /api/1/walletables 口座一覧の取得
+- [x] GET /api/1/walletables 口座一覧の取得
 - [ ] POST /api/1/walletables 口座の作成
-- [ ] GET /api/1/walletables/{type}/{id} 口座情報の取得
+- [x] GET /api/1/walletables/{type}/{id} 口座情報の取得
 - [ ] PUT /api/1/walletables/{type}/{id} 口座の更新
 - [ ] DELETE /api/1/walletables/{type}/{id} 口座の削除
