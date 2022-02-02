@@ -77,6 +77,10 @@ func (c *Client) GetWalletTransactions(
 	companyID uint32, opts GetWalletTxnOpts) (*WalletTxnsResponse,  *oauth2.Token, error) {
 	var result WalletTxnsResponse
 
+	if (opts.WalletableType != "" && opts.WalletableID == 0)  || (opts.WalletableID != 0 && opts.WalletableType == "") {
+		return nil, oauth2Token, fmt.Errorf("either walletable_type or walletable_id is specified, then other value must be set")
+	}
+
 	v, err := query.Values(opts)
 	if err != nil {
 		return nil, oauth2Token, err
@@ -97,6 +101,10 @@ func (c *Client) GetWalletTransaction(
 	companyID uint32, txnID uint64, opts GetWalletTxnOpts,
 ) (*WalletTxn,  *oauth2.Token, error) {
 	var result WalletTxnResponse
+
+	if (opts.WalletableType != "" && opts.WalletableID == 0)  || (opts.WalletableID != 0 && opts.WalletableType == "") {
+		return nil, oauth2Token, fmt.Errorf("either walletable_type or walletable_id is specified, then other value must be set")
+	}
 
 	v, err := query.Values(opts)
 	if err != nil {
