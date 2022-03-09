@@ -20,7 +20,12 @@ const (
 )
 
 type DealsResponse struct {
-	Deals []Deal `json:"deals"`
+	Deals []Deal            `json:"deals"`
+	Meta  DealsResponseMeta `json:"meta"`
+}
+
+type DealsResponseMeta struct {
+	TotalCount int32 `json:"total_count"`
 }
 
 type DealResponse struct {
