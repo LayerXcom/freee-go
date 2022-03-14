@@ -13,10 +13,12 @@ import (
 const (
 	APIPathDeals = "deals"
 
-	DealTypeIncome      = "income"
-	DealTypeExpense     = "expense"
-	DealStatusSettled   = "settled"
-	DealStatusUnsettled = "unsettled"
+	DealTypeIncome            = "income"
+	DealTypeExpense           = "expense"
+	DealStatusSettled         = "settled"
+	DealStatusUnsettled       = "unsettled"
+	DealDetailEntrySideCredit = "credit"
+	DealDetailEntrySideDebit  = "debit"
 )
 
 type DealsResponse struct {
@@ -106,6 +108,8 @@ type DealDetails struct {
 	Description *string `json:"description,omitempty"`
 	// 消費税額（指定しない場合は自動で計算されます）
 	Vat *int32 `json:"vat,omitempty"`
+	// 貸借（貸方: credit, 借方: debit）
+	EntrySide string `json:"entry_side"`
 }
 
 type DealRenews struct {
