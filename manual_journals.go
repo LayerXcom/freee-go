@@ -12,6 +12,9 @@ import (
 
 const (
 	APIPathManualJournals = "manual_journals"
+
+	ManualJournalEntrySideCredit = "credit"
+	ManualJournalEntrySideDebit  = "debit"
 )
 
 type ManualJournalsResponse struct {
