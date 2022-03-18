@@ -14,6 +14,10 @@ const (
 	APIPathManualJournals = "manual_journals"
 )
 
+type ManualJournalsResponse struct {
+	ManualJournals []ManualJournal `json:"manual_journals"`
+}
+
 type ManualJournalResponse struct {
 	ManualJournal ManualJournal `json:"manual_journal"`
 }
@@ -167,6 +171,17 @@ type UpdateManualJournalParamsDetails struct {
 	Description string `json:"description,omitempty"`
 }
 
+type GetManualJournalsOpts struct {
+	// 発生日で絞込：開始日(yyyy-mm-dd)
+	StartIssueDate string `url:"start_issue_date,omitempty"`
+	// 発生日で絞込：終了日(yyyy-mm-dd)
+	EndIssueDate string `url:"end_issue_date,omitempty"`
+	// 貸借で絞込 (貸方: credit, 借方: debit)
+	EntrySide string `url:"entry_side,omitempty"`
+	Offset    uint32 `url:"offset,omitempty"`
+	Limit     uint32 `url:"limit,omitempty"`
+}
+
 func (c *Client) CreateManualJournal(
 	ctx context.Context, oauth2Token *oauth2.Token,
 	params CreateManualJournalParams,
@@ -210,4 +225,24 @@ func (c *Client) DestroyManualJournal(
 	}
 
 	return oauth2Token, nil
+}
+
+func (c *Client) GetManualJournals(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	companyID uint32, opts GetManualJournalsOpts,
+) (*ManualJournalsResponse, *oauth2.Token, error) {
+	var result ManualJournalsResponse
+
+	v, err := query.Values(opts)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+
+	SetCompanyID(&v, companyID)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathManualJournals), http.MethodGet, oauth2Token, v, nil, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+
+	return &result, oauth2Token, nil
 }
