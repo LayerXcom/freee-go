@@ -173,11 +173,13 @@ type UpdateManualJournalParamsDetails struct {
 
 type GetManualJournalsOpts struct {
 	// 発生日で絞込：開始日(yyyy-mm-dd)
-	StartIssueDate string `url:"start_issue_date"`
+	StartIssueDate string `url:"start_issue_date,omitempty"`
 	// 発生日で絞込：終了日(yyyy-mm-dd)
-	EndIssueDate string `url:"end_issue_date"`
+	EndIssueDate string `url:"end_issue_date,omitempty"`
 	// 貸借で絞込 (貸方: credit, 借方: debit)
-	EntrySide string `url:"entry_side"`
+	EntrySide string `url:"entry_side,omitempty"`
+	Offset    uint32 `url:"offset,omitempty"`
+	Limit     uint32 `url:"limit,omitempty"`
 }
 
 func (c *Client) CreateManualJournal(
