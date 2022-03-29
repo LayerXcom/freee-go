@@ -29,6 +29,10 @@ type Item struct {
 	CompanyID int32 `json:"company_id"`
 	// 品目名 (30文字以内)
 	Name string `json:"name"`
+	// 更新日(yyyy-mm-dd)
+	UpdateDate string `json:"update_date"`
+	// 品目の使用設定（true: 使用する、false: 使用しない）
+	Available bool `json:"available"`
 	// ショートカット１ (20文字以内)
 	Shortcut1 *string `json:"shortcut1,omitempty"`
 	// ショートカット２ (20文字以内)
