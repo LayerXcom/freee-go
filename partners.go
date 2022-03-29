@@ -44,6 +44,10 @@ type Partner struct {
 	CompanyID int32 `json:"company_id"`
 	// 取引先名
 	Name string `json:"name"`
+	// 更新日 (yyyy-mm-dd)
+	UpdateDate string `json:"update_date"`
+	// 取引先の使用設定（true: 使用する、false: 使用しない）
+	Available bool `json:"available"`
 	// ショートカット1 (20文字以内)
 	Shortcut1 *string `json:"shortcut1,omitempty"`
 	// ショートカット2 (20文字以内)
