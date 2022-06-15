@@ -23,12 +23,14 @@ type SectionResponse struct {
 }
 
 type Section struct {
-	// 品目ID
+	// 部門ID
 	ID int32 `json:"id"`
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
-	// 品目名 (30文字以内)
+	// 部門名 (30文字以内)
 	Name string `json:"name"`
+	// 部門の使用設定（true: 使用する、false: 使用しない）
+	Available bool `json:"available"`
 	// ショートカット１ (20文字以内)
 	Shortcut1 *string `json:"shortcut1,omitempty"`
 	// ショートカット２ (20文字以内)
