@@ -38,6 +38,8 @@ type ManualJournal struct {
 	TxnNumber *string `json:"txn_number"`
 	// 貸借行一覧（配列）: 貸借合わせて100行まで登録できます。
 	Details []ManualJournalDetails `json:"details"`
+	// 証憑ファイルID（ファイルボックスのファイルID）（配列）
+	ReceiptIDs []uint64 `json:"receipt_ids"`
 }
 
 type ManualJournalDetails struct {
@@ -97,6 +99,8 @@ type CreateManualJournalParams struct {
 	// 決算整理仕訳フラグ（falseまたは未指定の場合: 日常仕訳）
 	Adjustment                       bool                              `json:"adjustment,omitempty"`
 	CreateManualJournalParamsDetails []CreateManualJournalParamsDetail `json:"details"`
+	// 証憑ファイルID（ファイルボックスのファイルID）（配列）
+	ReceiptIDs []uint64 `json:"receipt_ids,omitempty"`
 }
 
 type CreateManualJournalParamsDetail struct {
@@ -138,6 +142,8 @@ type UpdateManualJournalParams struct {
 	// 決算整理仕訳フラグ（falseまたは未指定の場合: 日常仕訳）
 	Adjustment bool                               `json:"adjustment,omitempty"`
 	Details    []UpdateManualJournalParamsDetails `json:"details"`
+	// 証憑ファイルID（ファイルボックスのファイルID）（配列）
+	ReceiptIDs []uint64 `json:"receipt_ids,omitempty"`
 }
 
 // ManualJournalUpdateParamsDetails 貸借行一覧（配列）: 貸借合わせて100行まで登録できます。
