@@ -111,11 +111,11 @@ func main() {
 
 ### 請求書
 
-- [ ] GET /api/1/invoices 請求書一覧の取得
-- [ ] POST /api/1/invoices 請求書の作成
-- [ ] GET /api/1/invoices/{id} 請求書の取得
-- [ ] PUT /api/1/invoices/{id} 請求書の更新
-- [ ] DELETE /api/1/invoices/{id} 請求書の削除
+- [x] GET /api/1/invoices 請求書一覧の取得
+- [x] POST /api/1/invoices 請求書の作成
+- [x] GET /api/1/invoices/{id} 請求書の取得
+- [x] PUT /api/1/invoices/{id} 請求書の更新
+- [x] DELETE /api/1/invoices/{id} 請求書の削除
 
 ### 品目
 
