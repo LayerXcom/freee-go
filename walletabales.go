@@ -16,7 +16,7 @@ const (
 	// 口座種別
 	WalletTypeBankAccount = "bank_account" // 銀行口座
 	WalletTypeCreditCard  = "credit_card"  // クレジットカード
-	WalletTypeWallet      = "wallet"       //現金, その他の決済口座
+	WalletTypeWallet      = "wallet"       // その他の決済口座
 )
 
 type WalletablesResponse struct {
@@ -38,6 +38,19 @@ type GetWalletablesOpts struct {
 	WithBalance bool `url:"with_balance,omitempty"`
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, その他の決済口座: wallet)
 	Type string `url:"type,omitempty"`
+}
+
+type WalletableCreateParams struct {
+	// 口座名 (255文字以内)
+	Name string `json:"name"`
+	// 口座種別（bank_account : 銀行口座, credit_card : クレジットカード, wallet : その他の決済口座）
+	Type string `json:"type"`
+	// 事業所ID
+	CompanyId int32 `json:"company_id"`
+	// 連携サービスID（typeにbank_account、credit_cardを指定する場合は必須）
+	BankId *int32 `json:"bank_id,omitempty"`
+	// 口座を資産口座とするか負債口座とするか（true: 資産口座 (デフォルト), false: 負債口座）<br> bank_idを指定しない場合にのみ使われます。<br> bank_idを指定する場合には資産口座か負債口座かはbank_idに指定したサービスに応じて決定され、is_assetに指定した値は無視されます。
+	IsAsset *bool `json:"is_asset,omitempty"`
 }
 
 type Walletable struct {
@@ -92,5 +105,17 @@ func (c *Client) GetWalletable(
 		return nil, oauth2Token, err
 	}
 
+	return &result.Walletable, oauth2Token, nil
+}
+
+func (c *Client) CreateWalletable(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	params WalletableCreateParams,
+) (*Walletable, *oauth2.Token, error) {
+	var result WalletableResponse
+	oauth2Token, err := c.call(ctx, path.Join(APIPathWalletables), http.MethodPost, oauth2Token, nil, params, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
 	return &result.Walletable, oauth2Token, nil
 }
