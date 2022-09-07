@@ -25,13 +25,39 @@ type WalletTxnResponse struct {
 	WalletTxn WalletTxn `json:"wallet_txn"`
 }
 
+type WalletTxn struct {
+	// 明細ID
+	ID uint64 `json:"id"`
+	// 事業所ID
+	CompanyID uint32 `json:"company_id"`
+	// 取引日(yyyy-mm-dd)
+	Date string `json:"date"`
+	// 取引金額
+	Amount int64 `json:"amount"`
+	// 未決済金額
+	DueAmount int32 `json:"due_amount"`
+	// 残高(銀行口座等)
+	Balance int32 `json:"balance"`
+	// 入金／出金 (入金: income, 出金: expense)
+	EntrySide string `json:"entry_side"`
+	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet)
+	WalletableType string `json:"walletable_type"`
+	// 口座ID
+	WalletableID uint64 `json:"walletable_id"`
+	// 取引内容
+	Description string `json:"description"`
+	// 明細のステータス（消込待ち: 1, 消込済み: 2, 無視: 3, 消込中: 4, 対象外: 6）
+	Status uint `json:"status"`
+	// 登録時に<a href=\"https://support.freee.co.jp/hc/ja/articles/202848350-明細の自動登録ルールを設定する\" target=\"_blank\">自動登録ルールの設定</a>が適用され、登録処理が実行された場合、 trueになります。〜を推測する、〜の消込をするの条件の場合は一致してもfalseになります。
+	RuleMatched bool `json:"rule_matched"`
+}
+
 type GetWalletTxnOpts struct {
 	// walletable_type、walletable_idは同時に指定が必要です。
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet)
 	WalletableType string `url:"walletable_type,omitempty"`
 	// 口座ID
 	WalletableID uint64 `url:"walletable_id,omitempty"`
-
 	// 取引日で絞込：開始日 (yyyy-mm-dd)
 	StartDate string `url:"start_date,omitempty"`
 	// 取引日で絞込：終了日 (yyyy-mm-dd)
@@ -44,29 +70,23 @@ type GetWalletTxnOpts struct {
 	Limit uint32 `url:"limit,omitempty"`
 }
 
-type WalletTxn struct {
-	// 明細ID
-	ID uint64 `json:"id"`
-	// 事業所ID
-	CompanyID uint32 `json:"company_id"`
-	// 取引日（yyyy-mm-dd）
-	Date string `json:"date"`
-	// 取引金額
-	Amount int32 `json:"amount"`
-	// 未決済金額
-	DueAmount int32 `json:"due_amount"`
-	// 残高
-	Balance int32 `json:"balance"`
-	// 入金/出勤（入金: income, 出勤: expense）
+type WalletTxnCreateParams struct {
+	// 入金／出金 (入金: income, 出金: expense)
 	EntrySide string `json:"entry_side"`
+	// 取引内容
+	Description *string `json:"description,omitempty"`
+	// 取引金額
+	Amount int64 `json:"amount"`
+	// 口座ID
+	WalletableId int32 `json:"walletable_id"`
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet)
 	WalletableType string `json:"walletable_type"`
-	// 口座ID
-	WalletableID uint64 `json:"walletable_id"`
-	// 取引内容
-	Description string `json:"description"`
-	// 明細のステータス（消込待ち: 1, 消込済み: 2, 無視: 3, 消込中: 4）
-	Status uint `json:"status"`
+	// 取引日 (yyyy-mm-dd)
+	Date string `json:"date"`
+	// 事業所ID
+	CompanyId int32 `json:"company_id"`
+	// 残高 (銀行口座等)
+	Balance *int64 `json:"balance,omitempty"`
 }
 
 func (c *Client) GetWalletTransactions(
@@ -114,4 +134,16 @@ func (c *Client) GetWalletTransaction(
 	}
 
 	return &result.WalletTxn, oauth2Token, nil
+}
+
+func (c *Client) CreateWalletTransaction(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	params WalletTxnCreateParams,
+) (*WalletTxnResponse, *oauth2.Token, error) {
+	var result WalletTxnResponse
+	oauth2Token, err := c.call(ctx, path.Join(APIPathTxns), http.MethodPost, oauth2Token, nil, params, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+	return &result, oauth2Token, nil
 }
