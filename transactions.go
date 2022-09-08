@@ -78,13 +78,13 @@ type WalletTxnCreateParams struct {
 	// 取引金額
 	Amount int64 `json:"amount"`
 	// 口座ID
-	WalletableId int32 `json:"walletable_id"`
+	WalletableID int32 `json:"walletable_id"`
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet)
 	WalletableType string `json:"walletable_type"`
 	// 取引日 (yyyy-mm-dd)
 	Date string `json:"date"`
 	// 事業所ID
-	CompanyId int32 `json:"company_id"`
+	CompanyID uint32 `json:"company_id"`
 	// 残高 (銀行口座等)
 	Balance *int64 `json:"balance,omitempty"`
 }
