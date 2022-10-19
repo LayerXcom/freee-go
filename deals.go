@@ -63,7 +63,7 @@ type Deal struct {
 	// 金額
 	Amount int64 `json:"amount"`
 	// 支払金額
-	DueAmount *int32 `json:"due_amount,omitempty"`
+	DueAmount *int64 `json:"due_amount,omitempty"`
 	// 収支区分 (収入: income, 支出: expense)
 	Type *string `json:"type,omitempty"`
 	// 取引先ID
