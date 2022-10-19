@@ -61,7 +61,7 @@ type Deal struct {
 	// 支払期日 (yyyy-mm-dd)
 	DueDate *string `json:"due_date,omitempty"`
 	// 金額
-	Amount int32 `json:"amount"`
+	Amount int64 `json:"amount"`
 	// 支払金額
 	DueAmount *int32 `json:"due_amount,omitempty"`
 	// 収支区分 (収入: income, 支出: expense)
@@ -91,7 +91,7 @@ type DealDetails struct {
 	// 勘定科目ID
 	AccountItemID int32 `json:"account_item_id"`
 	// 取引金額（税込で指定してください）
-	Amount int32 `json:"amount"`
+	Amount int64 `json:"amount"`
 	// 品目ID
 	ItemID *int32 `json:"item_id,omitempty"`
 	// 部門ID
@@ -135,7 +135,7 @@ type DealPayments struct {
 	// 口座ID（from_walletable_typeがprivate_account_itemの場合は勘定科目ID）
 	FromWalletableID int32 `json:"from_walletable_id,omitempty"`
 	// 支払金額
-	Amount int32 `json:"amount"`
+	Amount int64 `json:"amount"`
 }
 
 type DealReceipts struct {
@@ -195,7 +195,7 @@ type DealCreateParamsDetails struct {
 	// 勘定科目ID
 	AccountItemID int32 `json:"account_item_id"`
 	// 取引金額（税込で指定してください）
-	Amount int32 `json:"amount"`
+	Amount int64 `json:"amount"`
 	// 品目ID
 	ItemID *int32 `json:"item_id,omitempty"`
 	// 部門ID
@@ -216,7 +216,7 @@ type DealCreateParamsDetails struct {
 
 type DealCreateParamsPayments struct {
 	// 支払金額：payments指定時は必須
-	Amount int32 `json:"amount"`
+	Amount int64 `json:"amount"`
 	// 口座ID（from_walletable_typeがprivate_account_itemの場合は勘定科目ID）：payments指定時は必須
 	FromWalletableID int32 `json:"from_walletable_id"`
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet, プライベート資金（法人の場合は役員借入金もしくは役員借入金、個人の場合は事業主貸もしくは事業主借）: private_account_item)：payments指定時は必須
@@ -253,7 +253,7 @@ type DealUpdateParamsDetails struct {
 	// 勘定科目ID
 	AccountItemID int32 `json:"account_item_id"`
 	// 取引金額（税込で指定してください）
-	Amount int32 `json:"amount"`
+	Amount int64 `json:"amount"`
 	// 品目ID
 	ItemID *int32 `json:"item_id,omitempty"`
 	// 部門ID
