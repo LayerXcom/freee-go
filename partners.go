@@ -72,6 +72,10 @@ type Partner struct {
 	PayerWalletableID *int32 `json:"payer_walletable_id,omitempty"`
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
 	TransferFeeHandlingSide string `json:"transfer_fee_handling_side,omitempty"`
+	// インボイス制度適格請求書発行事業者（true: 対象事業者、false: 非対象事業者）
+	QualifiedInvoiceIssuer *bool `json:"qualified_invoice_issuer,omitempty"`
+	// インボイス制度適格請求書発行事業者登録番号
+	InvoiceRegistrationNumber *string `json:"invoice_registration_number,omitempty"`
 	//
 	AddressAttributes *PartnerAddressAttributes `json:"address_attributes,omitempty"`
 	//
@@ -149,7 +153,12 @@ type CreatePartnerParams struct {
 	// 振込元口座ID（一括振込ファイル用）:（walletableのtypeが'bank_account'のidのみ指定できます。また、未設定にする場合は、nullを指定してください。）
 	PayerWalletableID *int32 `json:"payer_walletable_id,omitempty"`
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
-	TransferFeeHandlingSide      string                                          `json:"transfer_fee_handling_side,omitempty"`
+	TransferFeeHandlingSide string `json:"transfer_fee_handling_side,omitempty"`
+	// インボイス制度適格請求書発行事業者（true: 対象事業者、false: 非対象事業者）
+	QualifiedInvoiceIssuer *bool `json:"qualified_invoice_issuer,omitempty"`
+	// インボイス制度適格請求書発行事業者登録番号
+	InvoiceRegistrationNumber *string `json:"invoice_registration_number,omitempty"`
+	//
 	AddressAttributes            CreatePartnerParamsAddressAttributes            `json:"address_attributes,omitempty"`
 	PartnerDocSettingAttributes  CreatePartnerParamsPartnerDocSettingAttributes  `json:"partner_doc_setting_attributes,omitempty"`
 	PartnerBankAccountAttributes CreatePartnerParamsPartnerBankAccountAttributes `json:"partner_bank_account_attributes,omitempty"`
@@ -250,7 +259,12 @@ type UpdatePartnerParams struct {
 	// 振込元口座ID（一括振込ファイル用）:（walletableのtypeが'bank_account'のidのみ指定できます。また、未設定にする場合は、nullを指定してください。）
 	PayerWalletableID *int32 `json:"payer_walletable_id,omitempty"`
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
-	TransferFeeHandlingSide      string                                          `json:"transfer_fee_handling_side,omitempty"`
+	TransferFeeHandlingSide string `json:"transfer_fee_handling_side,omitempty"`
+	// インボイス制度適格請求書発行事業者（true: 対象事業者、false: 非対象事業者）
+	QualifiedInvoiceIssuer *bool `json:"qualified_invoice_issuer,omitempty"`
+	// インボイス制度適格請求書発行事業者登録番号
+	InvoiceRegistrationNumber *string `json:"invoice_registration_number,omitempty"`
+	//
 	AddressAttributes            CreatePartnerParamsAddressAttributes            `json:"address_attributes,omitempty"`
 	PartnerDocSettingAttributes  CreatePartnerParamsPartnerDocSettingAttributes  `json:"partner_doc_setting_attributes,omitempty"`
 	PartnerBankAccountAttributes CreatePartnerParamsPartnerBankAccountAttributes `json:"partner_bank_account_attributes,omitempty"`
