@@ -63,8 +63,7 @@ func (c *Client) GetSections(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, APIPathSections, http.MethodGet, oauth2Token, v, nil, &result)
-	if err != nil {
+	if err = c.call(ctx, APIPathSections, http.MethodGet, oauth2Token, v, nil, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 
@@ -76,8 +75,7 @@ func (c *Client) CreateSection(
 	params SectionParams,
 ) (*Section, *oauth2.Token, error) {
 	var result SectionResponse
-	oauth2Token, err := c.call(ctx, APIPathSections, http.MethodPost, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, APIPathSections, http.MethodPost, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.Section, oauth2Token, nil
@@ -88,8 +86,7 @@ func (c *Client) UpdateSection(
 	sectionID uint32, params SectionParams,
 ) (*Section, *oauth2.Token, error) {
 	var result SectionResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathSections, fmt.Sprint(sectionID)), http.MethodPut, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, path.Join(APIPathSections, fmt.Sprint(sectionID)), http.MethodPut, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.Section, oauth2Token, nil
@@ -104,8 +101,7 @@ func (c *Client) DestroySection(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathSections, fmt.Sprint(sectionID)), http.MethodDelete, oauth2Token, v, nil, nil)
-	if err != nil {
+	if err = c.call(ctx, path.Join(APIPathSections, fmt.Sprint(sectionID)), http.MethodDelete, oauth2Token, v, nil, nil); err != nil {
 		return oauth2Token, err
 	}
 

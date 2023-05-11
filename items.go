@@ -66,8 +66,7 @@ func (c *Client) GetItems(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, APIPathItems, http.MethodGet, oauth2Token, v, nil, &result)
-	if err != nil {
+	if err = c.call(ctx, APIPathItems, http.MethodGet, oauth2Token, v, nil, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 
@@ -79,8 +78,7 @@ func (c *Client) CreateItem(
 	params ItemParams,
 ) (*Item, *oauth2.Token, error) {
 	var result ItemResponse
-	oauth2Token, err := c.call(ctx, APIPathItems, http.MethodPost, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, APIPathItems, http.MethodPost, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.Item, oauth2Token, nil
@@ -92,8 +90,7 @@ func (c *Client) UpdateItem(
 	itemID uint32,
 ) (*Item, *oauth2.Token, error) {
 	var result ItemResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathItems, fmt.Sprint(itemID)), http.MethodPut, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, path.Join(APIPathItems, fmt.Sprint(itemID)), http.MethodPut, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.Item, oauth2Token, nil
@@ -108,8 +105,7 @@ func (c *Client) DestroyItem(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathItems, fmt.Sprint(itemID)), http.MethodDelete, oauth2Token, v, nil, nil)
-	if err != nil {
+	if err = c.call(ctx, path.Join(APIPathItems, fmt.Sprint(itemID)), http.MethodDelete, oauth2Token, v, nil, nil); err != nil {
 		return oauth2Token, err
 	}
 
