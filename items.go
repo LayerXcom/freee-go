@@ -37,6 +37,8 @@ type Item struct {
 	Shortcut1 *string `json:"shortcut1,omitempty"`
 	// ショートカット２ (20文字以内)
 	Shortcut2 *string `json:"shortcut2,omitempty"`
+	// コード
+	Code *string `json:"code,omitempty"`
 }
 
 type GetItemsOpts struct {
@@ -53,6 +55,8 @@ type ItemParams struct {
 	Shortcut1 *string `json:"shortcut1,omitempty"`
 	// ショートカット２ (20文字以内)
 	Shortcut2 *string `json:"shortcut2,omitempty"`
+	// コード（利用を有効にしている場合は必須）
+	Code *string `json:"code,omitempty"`
 }
 
 func (c *Client) GetItems(
