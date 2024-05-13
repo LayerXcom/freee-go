@@ -207,7 +207,7 @@ func (c *Client) CreateManualJournal(
 
 func (c *Client) UpdateManualJournal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	journalID int32, params UpdateManualJournalParams,
+	journalID int64, params UpdateManualJournalParams,
 ) (*ManualJournalResponse, *oauth2.Token, error) {
 	var result ManualJournalResponse
 
@@ -221,7 +221,7 @@ func (c *Client) UpdateManualJournal(
 
 func (c *Client) DestroyManualJournal(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, journalID int32,
+	companyID uint32, journalID int64,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {
