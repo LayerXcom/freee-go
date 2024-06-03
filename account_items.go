@@ -23,6 +23,8 @@ type AccountItems struct {
 type AccountItem struct {
 	// 勘定科目ID
 	ID int32 `json:"id"`
+	// 勘定科目コード
+	Code *string `json:"code,omitempty"`
 	// 勘定科目名 (30文字以内)
 	Name string `json:"name"`
 	// ショートカット1 (20文字以内)
