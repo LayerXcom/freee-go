@@ -27,6 +27,8 @@ type Section struct {
 	ID int32 `json:"id"`
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
+	// 部門コード
+	Code *string `json:"code,omitempty"`
 	// 部門名 (30文字以内)
 	Name string `json:"name"`
 	// 部門の使用設定（true: 使用する、false: 使用しない）
@@ -40,6 +42,8 @@ type Section struct {
 type SectionParams struct {
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
+	// 部門コード（利用を有効にしている場合は必須）
+	Code *string `json:"code,omitempty"`
 	// 部門名 (30文字以内)
 	Name string `json:"name"`
 	// 正式名称 (255文字以内)
