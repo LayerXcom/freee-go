@@ -236,6 +236,26 @@ func (c *Client) DestroyManualJournal(
 	return oauth2Token, nil
 }
 
+func (c *Client) GetManualJournal(
+	ctx context.Context, oauth2Token *oauth2.Token,
+	companyID uint32, journalID int64, opts GetManualJournalsOpts,
+) (*ManualJournalResponse, *oauth2.Token, error) {
+	var result ManualJournalResponse
+
+	v, err := query.Values(opts)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+
+	SetCompanyID(&v, companyID)
+	oauth2Token, err = c.call(ctx, path.Join(APIPathManualJournals, fmt.Sprint(journalID)), http.MethodGet, oauth2Token, v, nil, &result)
+	if err != nil {
+		return nil, oauth2Token, err
+	}
+
+	return &result, oauth2Token, nil
+}
+
 func (c *Client) GetManualJournals(
 	ctx context.Context, oauth2Token *oauth2.Token,
 	companyID uint32, opts GetManualJournalsOpts,
