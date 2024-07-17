@@ -28,6 +28,8 @@ type SegmentTagResponse struct {
 type SegmentTag struct {
 	// セグメントタグID
 	ID int32 `json:"id"`
+	// セグメントコード（利用を有効にしている場合は必須）
+	Code *string `json:"code,omitempty"`
 	// セグメントタグ名
 	Name string `json:"name"`
 	// 備考
@@ -41,6 +43,8 @@ type SegmentTag struct {
 type SegmentTagParams struct {
 	// 事業所ID
 	CompanyID int32 `json:"company_id"`
+	// セグメントコード（利用を有効にしている場合は必須）
+	Code *string `json:"code,omitempty"`
 	// セグメントタグ名 (30文字以内)
 	Name string `json:"name"`
 	// 備考 (30文字以内)
