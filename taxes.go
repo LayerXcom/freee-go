@@ -30,7 +30,7 @@ type TaxCompanies struct {
 
 type TaxCompany struct {
 	// 税区分コード
-	Code int32 `json:"code"`
+	Code int64 `json:"code"`
 	// 税区分名
 	Name string `json:"name"`
 	// 税区分名（日本語表示用）
@@ -43,7 +43,7 @@ type TaxCompany struct {
 
 func (c *Client) GetTaxCompanies(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32,
+	companyID int64,
 ) (*TaxCompanies, *oauth2.Token, error) {
 	var result TaxCompanies
 

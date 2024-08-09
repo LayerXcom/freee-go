@@ -37,11 +37,11 @@ type PartnerResponse struct {
 
 type Partner struct {
 	// 取引先ID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// 取引先コード
 	Code *string `json:"code,omitempty"`
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 取引先名
 	Name string `json:"name"`
 	// 更新日 (yyyy-mm-dd)
@@ -53,7 +53,7 @@ type Partner struct {
 	// ショートカット2 (20文字以内)
 	Shortcut2 *string `json:"shortcut2,omitempty"`
 	// 事業所種別（null: 未設定、1: 法人、2: 個人）
-	OrgCode *int32 `json:"org_code,omitempty"`
+	OrgCode *int64 `json:"org_code,omitempty"`
 	// 地域（JP: 国内、ZZ:国外）
 	CountryCode string `json:"country_code,omitempty"`
 	// 正式名称（255文字以内）
@@ -69,7 +69,7 @@ type Partner struct {
 	// 担当者 メールアドレス
 	Email *string `json:"email,omitempty"`
 	// 振込元口座ID（一括振込ファイル用）:（未設定の場合は、nullです。）
-	PayerWalletableID *int32 `json:"payer_walletable_id,omitempty"`
+	PayerWalletableID *int64 `json:"payer_walletable_id,omitempty"`
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
 	TransferFeeHandlingSide string `json:"transfer_fee_handling_side,omitempty"`
 	// インボイス制度適格請求書発行事業者（true: 対象事業者、false: 非対象事業者）
@@ -88,7 +88,7 @@ type PartnerAddressAttributes struct {
 	// 郵便番号
 	Zipcode *string `json:"zipcode,omitempty"`
 	// 都道府県コード（0:北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄
-	PrefectureCode int32 `json:"prefecture_code,omitempty"`
+	PrefectureCode int64 `json:"prefecture_code,omitempty"`
 	// 市区町村・番地
 	StreetName1 *string `json:"street_name1,omitempty"`
 	// 建物名・部屋番号など
@@ -125,7 +125,7 @@ type PartnerBankAccountAttributes struct {
 
 type CreatePartnerParams struct {
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 取引先名 (255文字以内)
 	Name string `json:"name"`
 	// 取引先コード（取引先コードの利用を有効にしている場合は、codeの指定は必須です。）
@@ -135,7 +135,7 @@ type CreatePartnerParams struct {
 	// ショートカット２ (255文字以内)
 	Shortcut2 string `json:"shortcut2,omitempty"`
 	// 事業所種別（null: 未設定、1: 法人、2: 個人）
-	OrgCode *int32 `json:"org_code,omitempty"`
+	OrgCode *int64 `json:"org_code,omitempty"`
 	// 地域（JP: 国内、ZZ:国外）
 	CountryCode string `json:"country_code,omitempty"`
 	// 正式名称（255文字以内）
@@ -151,7 +151,7 @@ type CreatePartnerParams struct {
 	// 担当者 メールアドレス (255文字以内)
 	Email string `json:"email,omitempty"`
 	// 振込元口座ID（一括振込ファイル用）:（walletableのtypeが'bank_account'のidのみ指定できます。また、未設定にする場合は、nullを指定してください。）
-	PayerWalletableID *int32 `json:"payer_walletable_id,omitempty"`
+	PayerWalletableID *int64 `json:"payer_walletable_id,omitempty"`
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
 	TransferFeeHandlingSide string `json:"transfer_fee_handling_side,omitempty"`
 	// インボイス制度適格請求書発行事業者（true: 対象事業者、false: 非対象事業者）
@@ -170,7 +170,7 @@ type CreatePartnerParamsAddressAttributes struct {
 	// 郵便番号（8文字以内）
 	Zipcode string `json:"zipcode,omitempty"`
 	// 都道府県コード（0: 北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄
-	PrefectureCode int32 `json:"prefecture_code,omitempty"`
+	PrefectureCode int64 `json:"prefecture_code,omitempty"`
 	// 市区町村・番地（255文字以内）
 	StreetName1 string `json:"street_name1,omitempty"`
 	// 建物名・部屋番号など（255文字以内）
@@ -207,11 +207,11 @@ type CreatePartnerParamsPartnerBankAccountAttributes struct {
 
 type CreatePartnerParamsPaymentTermAttributes struct {
 	// 締め日（29, 30, 31日の末日を指定する場合は、32を指定してください。）
-	CutoffDay int32 `json:"cutoff_day,omitempty"`
+	CutoffDay int64 `json:"cutoff_day,omitempty"`
 	// 支払月
-	AdditionalMonths int32 `json:"additional_months,omitempty"`
+	AdditionalMonths int64 `json:"additional_months,omitempty"`
 	// 支払日（29, 30, 31日の末日を指定する場合は、32を指定してください。）
-	FixedDay int32 `json:"fixed_day,omitempty"`
+	FixedDay int64 `json:"fixed_day,omitempty"`
 }
 
 func (c *Client) CreatePartner(
@@ -233,7 +233,7 @@ func (c *Client) CreatePartner(
 
 type UpdatePartnerParams struct {
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 取引先名 (255文字以内)
 	Name string `json:"name"`
 	// ショートカット１ (255文字以内)
@@ -241,7 +241,7 @@ type UpdatePartnerParams struct {
 	// ショートカット２ (255文字以内)
 	Shortcut2 string `json:"shortcut2,omitempty"`
 	// 事業所種別（null: 未設定、1: 法人、2: 個人）
-	OrgCode *int32 `json:"org_code,omitempty"`
+	OrgCode *int64 `json:"org_code,omitempty"`
 	// 地域（JP: 国内、ZZ:国外）
 	CountryCode string `json:"country_code,omitempty"`
 	// 正式名称（255文字以内）
@@ -257,7 +257,7 @@ type UpdatePartnerParams struct {
 	// 担当者 メールアドレス (255文字以内)
 	Email string `json:"email,omitempty"`
 	// 振込元口座ID（一括振込ファイル用）:（walletableのtypeが'bank_account'のidのみ指定できます。また、未設定にする場合は、nullを指定してください。）
-	PayerWalletableID *int32 `json:"payer_walletable_id,omitempty"`
+	PayerWalletableID *int64 `json:"payer_walletable_id,omitempty"`
 	// 振込手数料負担（一括振込ファイル用）: (振込元(当方): payer, 振込先(先方): payee)
 	TransferFeeHandlingSide string `json:"transfer_fee_handling_side,omitempty"`
 	// インボイス制度適格請求書発行事業者（true: 対象事業者、false: 非対象事業者）
@@ -274,7 +274,7 @@ type UpdatePartnerParams struct {
 
 func (c *Client) UpdatePartner(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	partnerID uint32, params UpdatePartnerParams,
+	partnerID int64, params UpdatePartnerParams,
 ) (*Partner, *oauth2.Token, error) {
 	var result PartnerResponse
 
@@ -290,14 +290,14 @@ func (c *Client) UpdatePartner(
 }
 
 type GetPartnersOpts struct {
-	Offset  uint32 `url:"offset,omitempty"`
-	Limit   uint32 `url:"limit,omitempty"`
+	Offset  int64  `url:"offset,omitempty"`
+	Limit   int64  `url:"limit,omitempty"`
 	Keyword string `url:"keyword,omitempty"`
 }
 
 func (c *Client) GetPartners(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, opts GetPartnersOpts,
+	companyID int64, opts GetPartnersOpts,
 ) (*Partners, *oauth2.Token, error) {
 	var result Partners
 
@@ -316,7 +316,7 @@ func (c *Client) GetPartners(
 
 func (c *Client) DestroyPartner(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, partnerID int32,
+	companyID int64, partnerID int64,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {

@@ -16,7 +16,7 @@ const (
 
 type CreateReceiptParams struct {
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// メモ (255文字以内)
 	Description string `json:"description,omitempty"`
 	// 取引日 (yyyy-mm-dd)
@@ -35,7 +35,7 @@ type ReceiptResponse struct {
 
 type Receipt struct {
 	// 証憑ID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// ステータス(unconfirmed:確認待ち、confirmed:確認済み、deleted:削除済み、ignored:無視)
 	Status string `json:"status"`
 	// メモ
@@ -57,17 +57,17 @@ type GetReceiptOpts struct {
 	StartDate        string `url:"start_date"`
 	EndDate          string `url:"end_date"`
 	UserName         string `url:"user_name,omitempty"`
-	Number           int32  `url:"number,omitempty"`
+	Number           int64  `url:"number,omitempty"`
 	CommentType      string `url:"comment_type,omitempty"`
 	CommentImportant bool   `url:"comment_important,omitempty"`
 	Category         string `url:"category,omitempty"`
-	Offset           uint32 `url:"offset,omitempty"`
-	Limit            uint32 `url:"limit,omitempty"`
+	Offset           int64  `url:"offset,omitempty"`
+	Limit            int64  `url:"limit,omitempty"`
 }
 
 type UserCreatedReceipt struct {
 	// ユーザーID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// メールアドレス
 	Email string `json:"email"`
 	// 表示名
@@ -93,7 +93,7 @@ func (c *Client) CreateReceipt(
 }
 
 func (c *Client) GetReceipt(
-	ctx context.Context, oauth2Token *oauth2.Token, companyID uint32, receiptID int32,
+	ctx context.Context, oauth2Token *oauth2.Token, companyID int64, receiptID int64,
 ) (*ReceiptResponse, *oauth2.Token, error) {
 	var result ReceiptResponse
 

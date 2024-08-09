@@ -12,9 +12,9 @@ import (
 
 const (
 	APIPathSegments = "segments"
-	SegmentID1      = uint32(1)
-	SegmentID2      = uint32(2)
-	SegmentID3      = uint32(3)
+	SegmentID1      = int64(1)
+	SegmentID2      = int64(2)
+	SegmentID3      = int64(3)
 )
 
 type SegmentTags struct {
@@ -27,7 +27,7 @@ type SegmentTagResponse struct {
 
 type SegmentTag struct {
 	// セグメントタグID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// セグメントコード（利用を有効にしている場合は必須）
 	Code *string `json:"code,omitempty"`
 	// セグメントタグ名
@@ -42,7 +42,7 @@ type SegmentTag struct {
 
 type SegmentTagParams struct {
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// セグメントコード（利用を有効にしている場合は必須）
 	Code *string `json:"code,omitempty"`
 	// セグメントタグ名 (30文字以内)
@@ -56,13 +56,13 @@ type SegmentTagParams struct {
 }
 
 type GetSegmentTagsOpts struct {
-	Offset uint32 `url:"offset,omitempty"`
-	Limit  uint32 `url:"limit,omitempty"`
+	Offset int64 `url:"offset,omitempty"`
+	Limit  int64 `url:"limit,omitempty"`
 }
 
 func (c *Client) GetSegmentTags(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, segmentID uint32,
+	companyID int64, segmentID int64,
 	opts GetSegmentTagsOpts,
 ) (*SegmentTags, *oauth2.Token, error) {
 	var result SegmentTags
@@ -82,7 +82,7 @@ func (c *Client) GetSegmentTags(
 
 func (c *Client) CreateSegmentTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	segmentID uint32, params SegmentTagParams,
+	segmentID int64, params SegmentTagParams,
 ) (*SegmentTag, *oauth2.Token, error) {
 	var result SegmentTagResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags"), http.MethodPost, oauth2Token, nil, params, &result)
@@ -94,7 +94,7 @@ func (c *Client) CreateSegmentTag(
 
 func (c *Client) UpdateSegmentTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	segmentID uint32, id uint32,
+	segmentID int64, id int64,
 	params SegmentTagParams,
 ) (*SegmentTag, *oauth2.Token, error) {
 	var result SegmentTagResponse
@@ -107,8 +107,8 @@ func (c *Client) UpdateSegmentTag(
 
 func (c *Client) DestroySegmentTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32,
-	segmentID uint32, id uint32,
+	companyID int64,
+	segmentID int64, id int64,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {

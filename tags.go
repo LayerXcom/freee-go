@@ -24,9 +24,9 @@ type TagResponse struct {
 
 type Tag struct {
 	// タグID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 名前(30文字以内)
 	Name *string `json:"name"`
 	// ショートカット1 (255文字以内)
@@ -37,7 +37,7 @@ type Tag struct {
 
 type TagParams struct {
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// メモタグ名 (30文字以内)
 	Name string `json:"name"`
 	// メモタグ検索用 (20文字以内)
@@ -47,13 +47,13 @@ type TagParams struct {
 }
 
 type GetTagsOpts struct {
-	Offset uint32 `url:"offset,omitempty"`
-	Limit  uint32 `url:"limit,omitempty"`
+	Offset int64 `url:"offset,omitempty"`
+	Limit  int64 `url:"limit,omitempty"`
 }
 
 func (c *Client) GetTags(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, opts GetTagsOpts,
+	companyID int64, opts GetTagsOpts,
 ) (*Tags, *oauth2.Token, error) {
 	var result Tags
 
@@ -84,7 +84,7 @@ func (c *Client) CreateTag(
 
 func (c *Client) GetTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, tagID uint32, opts GetTagsOpts,
+	companyID int64, tagID int64, opts GetTagsOpts,
 ) (*Tags, *oauth2.Token, error) {
 	var result Tags
 
@@ -103,7 +103,7 @@ func (c *Client) GetTag(
 
 func (c *Client) UpdateTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	tagID uint32, params TagParams,
+	tagID int64, params TagParams,
 ) (*Tag, *oauth2.Token, error) {
 	var result TagResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathTags, fmt.Sprint(tagID)), http.MethodPut, oauth2Token, nil, params, &result)
@@ -115,7 +115,7 @@ func (c *Client) UpdateTag(
 
 func (c *Client) DestroyTag(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, tagID int32,
+	companyID int64, tagID int64,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {

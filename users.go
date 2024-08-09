@@ -19,7 +19,7 @@ type Me struct {
 
 type User struct {
 	// ユーザーID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// メールアドレス
 	Email string `json:"email"`
 	// 表示ユーザー名
@@ -37,7 +37,7 @@ type User struct {
 
 type UserCompany struct {
 	// 事業所ID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// 表示名
 	DisplayName string `json:"display_name"`
 	// ユーザーの権限
