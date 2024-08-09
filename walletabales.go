@@ -46,20 +46,20 @@ type WalletableCreateParams struct {
 	// 口座種別（bank_account : 銀行口座, credit_card : クレジットカード, wallet : その他の決済口座）
 	Type string `json:"type"`
 	// 事業所ID
-	CompanyId int32 `json:"company_id"`
+	CompanyId int64 `json:"company_id"`
 	// 連携サービスID（typeにbank_account、credit_cardを指定する場合は必須）
-	BankId *int32 `json:"bank_id,omitempty"`
+	BankId *int64 `json:"bank_id,omitempty"`
 	// 口座を資産口座とするか負債口座とするか（true: 資産口座 (デフォルト), false: 負債口座）<br> bank_idを指定しない場合にのみ使われます。<br> bank_idを指定する場合には資産口座か負債口座かはbank_idに指定したサービスに応じて決定され、is_assetに指定した値は無視されます。
 	IsAsset *bool `json:"is_asset,omitempty"`
 }
 
 type Walletable struct {
 	// 口座ID
-	ID uint64 `json:"id"`
+	ID int64 `json:"id"`
 	// 口座名 (255文字以内)
 	Name string `json:"name"`
 	// サービスID
-	BankID uint64 `json:"bank_id"`
+	BankID int64 `json:"bank_id"`
 	// 口座区分 (銀行口座: bank_account, クレジットカード: credit_card, 現金: wallet)
 	Type string `json:"type"`
 	// 同期残高
@@ -70,7 +70,7 @@ type Walletable struct {
 
 func (c *Client) GetWalletables(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, opts GetWalletablesOpts,
+	companyID int64, opts GetWalletablesOpts,
 ) (*WalletablesResponse, *oauth2.Token, error) {
 	var result WalletablesResponse
 
@@ -90,7 +90,7 @@ func (c *Client) GetWalletables(
 
 func (c *Client) GetWalletable(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, walletType string, walletableID uint64,
+	companyID int64, walletType string, walletableID int64,
 ) (*Walletable, *oauth2.Token, error) {
 	var result WalletableResponse
 

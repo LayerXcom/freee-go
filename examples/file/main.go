@@ -37,7 +37,7 @@ func main() {
 		log.Fatal(err)
 	}
 	params := freee.CreateReceiptParams{
-		CompanyID: int32(companyID),
+		CompanyID: int64(companyID),
 		Receipt:   f,
 	}
 	resp, token, err := client.CreateReceipt(ctx, token, params, filepath.Base(file))

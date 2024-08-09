@@ -24,9 +24,9 @@ type SectionResponse struct {
 
 type Section struct {
 	// 部門ID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 部門コード
 	Code *string `json:"code,omitempty"`
 	// 部門名 (30文字以内)
@@ -41,7 +41,7 @@ type Section struct {
 
 type SectionParams struct {
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 部門コード（利用を有効にしている場合は必須）
 	Code *string `json:"code,omitempty"`
 	// 部門名 (30文字以内)
@@ -53,12 +53,12 @@ type SectionParams struct {
 	// ショートカット２ (20文字以内)
 	Shortcut2 *string `json:"shortcut2,omitempty"`
 	// 親部門ID (ビジネスプラン以上)
-	ParentID *int32 `json:"parent_id,omitempty"`
+	ParentID *int64 `json:"parent_id,omitempty"`
 }
 
 func (c *Client) GetSections(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32,
+	companyID int64,
 ) (*Sections, *oauth2.Token, error) {
 	var result Sections
 
@@ -89,7 +89,7 @@ func (c *Client) CreateSection(
 
 func (c *Client) UpdateSection(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	sectionID uint32, params SectionParams,
+	sectionID int64, params SectionParams,
 ) (*Section, *oauth2.Token, error) {
 	var result SectionResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathSections, fmt.Sprint(sectionID)), http.MethodPut, oauth2Token, nil, params, &result)
@@ -101,7 +101,7 @@ func (c *Client) UpdateSection(
 
 func (c *Client) DestroySection(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, sectionID int32,
+	companyID int64, sectionID int64,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {
