@@ -5,6 +5,6 @@ import (
 	"net/url"
 )
 
-func SetCompanyID(v *url.Values, companyID uint32) {
+func SetCompanyID(v *url.Values, companyID int64) {
 	v.Set("company_id", fmt.Sprintf("%d", companyID))
 }

@@ -69,9 +69,9 @@ type InvoiceResponse struct {
 
 type GetInvoiceOpts struct {
 	// 事業所ID
-	CompanyID int32 `url:"company_id"`
+	CompanyID int64 `url:"company_id"`
 	// 取引先IDで絞込
-	PartnerID int32 `url:"partner_id,omitempty"`
+	PartnerID int64 `url:"partner_id,omitempty"`
 	// 取引先コードで絞込
 	PartnerCode string `url:"partner_code,omitempty"`
 	// 請求日の開始日(yyyy-mm-dd)
@@ -91,20 +91,20 @@ type GetInvoiceOpts struct {
 	// 入金ステータス (unsettled: 入金待ち, settled: 入金済み)
 	PaymentStatus string `url:"payment_status,omitempty"`
 	// 取得レコードのオフセット (デフォルト: 0)
-	Offset uint32 `url:"offset,omitempty"`
+	Offset int64 `url:"offset,omitempty"`
 	// 取得レコードの件数 (デフォルト: 20, 最大: 100)
-	Limit uint32 `url:"limit,omitempty"`
+	Limit int64 `url:"limit,omitempty"`
 }
 
 type Invoice struct {
 	// 請求書ID
-	ID int32 `json:"id"`
+	ID int64 `json:"id"`
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 請求日 (yyyy-mm-dd)
 	IssueDate string `json:"issue_date"`
 	// 取引先ID
-	PartnerID int32 `json:"partner_id"`
+	PartnerID int64 `json:"partner_id"`
 	// 取引先コード
 	PartnerCode *string `json:"partner_code,omitempty"`
 	// 請求書番号
@@ -114,11 +114,11 @@ type Invoice struct {
 	// 期日 (yyyy-mm-dd)
 	DueDate *string `json:"due_date,omitempty"`
 	// 合計金額
-	TotalAmount int32 `json:"total_amount"`
+	TotalAmount int64 `json:"total_amount"`
 	// 合計税額
-	TotalVat int32 `json:"total_vat"`
+	TotalVat int64 `json:"total_vat"`
 	// 小計
-	SubTotal int32 `json:"sub_total"`
+	SubTotal int64 `json:"sub_total"`
 	// 売上計上日
 	BookingDate *string `json:"booking_date,omitempty"`
 	// 概要
@@ -148,7 +148,7 @@ type Invoice struct {
 	// 取引先郵便番号
 	PartnerZipcode *string `json:"partner_zipcode,omitempty"`
 	// 取引先都道府県コード（-1: 設定しない、0:北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄
-	PartnerPrefectureCode *int32 `json:"partner_prefecture_code,omitempty"`
+	PartnerPrefectureCode *int64 `json:"partner_prefecture_code,omitempty"`
 	// 取引先都道府県
 	PartnerPrefectureName *string `json:"partner_prefecture_name,omitempty"`
 	// 取引先市区町村・番地
@@ -162,7 +162,7 @@ type Invoice struct {
 	// 郵便番号
 	CompanyZipcode *string `json:"company_zipcode,omitempty"`
 	// 都道府県コード（-1: 設定しない、0:北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄
-	CompanyPrefectureCode *int32 `json:"company_prefecture_code,omitempty"`
+	CompanyPrefectureCode *int64 `json:"company_prefecture_code,omitempty"`
 	// 都道府県
 	CompanyPrefectureName *string `json:"company_prefecture_name,omitempty"`
 	// 市区町村・番地
@@ -192,7 +192,7 @@ type Invoice struct {
 	// 請求書の消費税計算方法(inclusive: 内税, exclusive: 外税)
 	TaxEntryMethod string `json:"tax_entry_method"`
 	// 取引ID (invoice_statusがsubmitted, unsubmittedの時IDが表示されます)
-	DealID *uint64 `json:"deal_id,omitempty"`
+	DealID *int64 `json:"deal_id,omitempty"`
 	// 請求内容
 	InvoiceContents       []InvoiceContent `json:"invoice_contents"`
 	TotalAmountPerVatRate struct {
@@ -210,14 +210,14 @@ type Invoice struct {
 	//
 	// [見積書・納品書を納品書・請求書に変換する](https://support.freee.co.jp/hc/ja/articles/203318410#1-2)
 	// [複数の見積書・納品書から合算請求書を作成する](https://support.freee.co.jp/hc/ja/articles/209076226)
-	RelatedQuotationIDs []int32 `json:"related_quotation_ids,omitempty"`
+	RelatedQuotationIDs []int64 `json:"related_quotation_ids,omitempty"`
 }
 
 type InvoiceContent struct {
 	// 請求内容ID
-	ID uint32 `json:"id"`
+	ID int64 `json:"id"`
 	// 順序
-	Order *uint32 `json:"order,omitempty"`
+	Order *int64 `json:"order,omitempty"`
 	// 行の種類
 	Type string `json:"type"`
 	// 数量
@@ -236,27 +236,27 @@ type InvoiceContent struct {
 	//   - vat: 消費税の金額
 	Amount int64 `json:"amount"`
 	// 消費税額
-	Vat int32 `json:"vat"`
+	Vat int64 `json:"vat"`
 	// 軽減税率税区分（true: 対象、false: 対象外）
 	ReducedVat bool `json:"reduced_vat"`
 	// 備考
 	Description *string `json:"description,omitempty"`
 	// 勘定科目ID
-	AccountItemID int32 `json:"account_item_id"`
+	AccountItemID int64 `json:"account_item_id"`
 	// 勘定科目名
 	AccountItemName string `json:"account_item_name"`
 	// 税区分コード
-	TaxCode int32 `json:"tax_code"`
+	TaxCode int64 `json:"tax_code"`
 	// 品目ID
-	ItemID *int32 `json:"item_id,omitempty"`
+	ItemID *int64 `json:"item_id,omitempty"`
 	// 品目
 	ItemName *string `json:"item_name,omitempty"`
 	// 部門ID
-	SectionID *int32 `json:"section_id,omitempty"`
+	SectionID *int64 `json:"section_id,omitempty"`
 	// 部門
 	SectionName *string `json:"section_name,omitempty"`
 	// メモタグID
-	TagIDs []int32 `json:"tag_ids"`
+	TagIDs []int64 `json:"tag_ids"`
 	// メモタグ
 	TagNames []string `json:"tag_names"`
 	// セグメント１ID
@@ -275,11 +275,11 @@ type InvoiceContent struct {
 
 type InvoiceCreateParams struct {
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 請求日 (yyyy-mm-dd)
 	IssueDate *string `json:"issue_date,omitempty"`
 	// 取引先ID
-	PartnerID *int32 `json:"partner_id,omitempty"`
+	PartnerID *int64 `json:"partner_id,omitempty"`
 	// 取引先コード
 	PartnerCode *string `json:"partner_code,omitempty"`
 	// 請求書番号 (デフォルト: 自動採番されます)
@@ -310,7 +310,7 @@ type InvoiceCreateParams struct {
 	// 取引先郵便番号 (デフォルトはpartner_idもしくはpartner_codeで指定された取引先設定情報が補完されます)
 	PartnerZipcode *string `json:"partner_zipcode,omitempty"`
 	// 取引先都道府県コード（0:北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄) (デフォルトはpartner_idもしくはpartner_codeで指定された取引先設定情報が補完されます)
-	PartnerPrefectureCode *int32 `json:"partner_prefecture_code,omitempty"`
+	PartnerPrefectureCode *int64 `json:"partner_prefecture_code,omitempty"`
 	// 取引先市区町村・番地 (デフォルトはpartner_idもしくはpartner_codeで指定された取引先設定情報が補完されます)
 	PartnerAddress1 *string `json:"partner_address1,omitempty"`
 	// 取引先建物名・部屋番号など (デフォルトはpartner_idもしくはpartner_codeで指定された取引先設定情報が補完されます)
@@ -320,7 +320,7 @@ type InvoiceCreateParams struct {
 	// 郵便番号 (デフォルトは事業所設定情報が補完されます)
 	CompanyZipcode *string `json:"company_zipcode,omitempty"`
 	// 都道府県コード（0:北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄) (デフォルトは事業所設定情報が補完されます)
-	CompanyPrefectureCode *int32 `json:"company_prefecture_code,omitempty"`
+	CompanyPrefectureCode *int64 `json:"company_prefecture_code,omitempty"`
 	// 市区町村・番地 (デフォルトは事業所設定情報が補完されます)
 	CompanyAddress1 *string `json:"company_address1,omitempty"`
 	// 建物名・部屋番号など (デフォルトは事業所設定情報が補完されます)
@@ -355,7 +355,7 @@ type InvoiceCreateParams struct {
 
 type InvoiceCreateParamsInvoiceContent struct {
 	// 順序
-	Order uint32 `json:"order"`
+	Order int64 `json:"order"`
 	// 行の種類
 	//
 	// - normal、discountを指定する場合、account_item_id,tax_codeとunit_priceが必須となります。
@@ -368,19 +368,19 @@ type InvoiceCreateParamsInvoiceContent struct {
 	// 単価 (tax_entry_method: inclusiveの場合は税込価格、tax_entry_method: exclusiveの場合は税抜価格となります)
 	UnitPrice json.Number `json:"unit_price"`
 	// 消費税額
-	Vat *int32 `json:"vat,omitempty"`
+	Vat *int64 `json:"vat,omitempty"`
 	// 備考
 	Description *string `json:"description,omitempty"`
 	// 勘定科目ID
-	AccountItemID int32 `json:"account_item_id"`
+	AccountItemID int64 `json:"account_item_id"`
 	// 税区分コード
-	TaxCode int32 `json:"tax_code"`
+	TaxCode int64 `json:"tax_code"`
 	// 品目ID
-	ItemID *int32 `json:"item_id,omitempty"`
+	ItemID *int64 `json:"item_id,omitempty"`
 	// 部門ID
-	SectionID *int32 `json:"section_id,omitempty"`
+	SectionID *int64 `json:"section_id,omitempty"`
 	// メモタグID
-	TagIDs *[]int32 `json:"tag_ids,omitempty"`
+	TagIDs *[]int64 `json:"tag_ids,omitempty"`
 	// セグメント１ID
 	Segment1TagID *int64 `json:"segment_1_tag_id,omitempty"`
 	// セグメント２ID
@@ -391,11 +391,11 @@ type InvoiceCreateParamsInvoiceContent struct {
 
 type InvoiceUpdateParams struct {
 	// 事業所ID
-	CompanyID int32 `json:"company_id"`
+	CompanyID int64 `json:"company_id"`
 	// 請求日 (yyyy-mm-dd)
 	IssueDate *string `json:"issue_date,omitempty"`
 	// 取引先ID
-	PartnerID *int32 `json:"partner_id,omitempty"`
+	PartnerID *int64 `json:"partner_id,omitempty"`
 	// 取引先コード
 	PartnerCode *string `json:"partner_code,omitempty"`
 	// 請求書番号 (デフォルト: 自動採番されます)
@@ -426,7 +426,7 @@ type InvoiceUpdateParams struct {
 	// 取引先郵便番号 (デフォルトはpartner_idもしくはpartner_codeで指定された取引先設定情報が補完されます)
 	PartnerZipcode *string `json:"partner_zipcode,omitempty"`
 	// 取引先都道府県コード（0:北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄) (デフォルトはpartner_idもしくはpartner_codeで指定された取引先設定情報が補完されます)
-	PartnerPrefectureCode *int32 `json:"partner_prefecture_code,omitempty"`
+	PartnerPrefectureCode *int64 `json:"partner_prefecture_code,omitempty"`
 	// 取引先市区町村・番地 (デフォルトはpartner_idもしくはpartner_codeで指定された取引先設定情報が補完されます)
 	PartnerAddress1 *string `json:"partner_address1,omitempty"`
 	// 取引先建物名・部屋番号など (デフォルトはpartner_idもしくはpartner_codeで指定された取引先設定情報が補完されます)
@@ -436,7 +436,7 @@ type InvoiceUpdateParams struct {
 	// 郵便番号 (デフォルトは事業所設定情報が補完されます)
 	CompanyZipcode *string `json:"company_zipcode,omitempty"`
 	// 都道府県コード（0:北海道、1:青森、2:岩手、3:宮城、4:秋田、5:山形、6:福島、7:茨城、8:栃木、9:群馬、10:埼玉、11:千葉、12:東京、13:神奈川、14:新潟、15:富山、16:石川、17:福井、18:山梨、19:長野、20:岐阜、21:静岡、22:愛知、23:三重、24:滋賀、25:京都、26:大阪、27:兵庫、28:奈良、29:和歌山、30:鳥取、31:島根、32:岡山、33:広島、34:山口、35:徳島、36:香川、37:愛媛、38:高知、39:福岡、40:佐賀、41:長崎、42:熊本、43:大分、44:宮崎、45:鹿児島、46:沖縄) (デフォルトは事業所設定情報が補完されます)
-	CompanyPrefectureCode *int32 `json:"company_prefecture_code,omitempty"`
+	CompanyPrefectureCode *int64 `json:"company_prefecture_code,omitempty"`
 	// 市区町村・番地 (デフォルトは事業所設定情報が補完されます)
 	CompanyAddress1 *string `json:"company_address1,omitempty"`
 	// 建物名・部屋番号など (デフォルトは事業所設定情報が補完されます)
@@ -471,9 +471,9 @@ type InvoiceUpdateParams struct {
 
 type InvoiceUpdateParamsInvoiceContent struct {
 	// 請求内容ID
-	ID *uint32 `json:"id,omitempty"`
+	ID *int64 `json:"id,omitempty"`
 	// 順序
-	Order uint32 `json:"order"`
+	Order int64 `json:"order"`
 	// 行の種類
 	//
 	// - normal、discountを指定する場合、account_item_id,tax_codeとunit_priceが必須となります。
@@ -486,19 +486,19 @@ type InvoiceUpdateParamsInvoiceContent struct {
 	// 単価 (tax_entry_method: inclusiveの場合は税込価格、tax_entry_method: exclusiveの場合は税抜価格となります)
 	UnitPrice json.Number `json:"unit_price"`
 	// 消費税額
-	Vat *int32 `json:"vat,omitempty"`
+	Vat *int64 `json:"vat,omitempty"`
 	// 備考
 	Description *string `json:"description,omitempty"`
 	// 勘定科目ID
-	AccountItemID int32 `json:"account_item_id"`
+	AccountItemID int64 `json:"account_item_id"`
 	// 税区分コード
-	TaxCode int32 `json:"tax_code"`
+	TaxCode int64 `json:"tax_code"`
 	// 品目ID
-	ItemID *int32 `json:"item_id,omitempty"`
+	ItemID *int64 `json:"item_id,omitempty"`
 	// 部門ID
-	SectionID *int32 `json:"section_id,omitempty"`
+	SectionID *int64 `json:"section_id,omitempty"`
 	// メモタグID
-	TagIDs *[]int32 `json:"tag_ids,omitempty"`
+	TagIDs *[]int64 `json:"tag_ids,omitempty"`
 	// セグメント１ID
 	Segment1TagID *int64 `json:"segment_1_tag_id,omitempty"`
 	// セグメント２ID
@@ -509,7 +509,7 @@ type InvoiceUpdateParamsInvoiceContent struct {
 
 func (c *Client) GetInvoices(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, opts GetInvoiceOpts,
+	companyID int64, opts GetInvoiceOpts,
 ) (*InvoicesResponse, *oauth2.Token, error) {
 	var result InvoicesResponse
 	v, err := query.Values(opts)
@@ -526,7 +526,7 @@ func (c *Client) GetInvoices(
 
 func (c *Client) GetInvoice(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, invoiceID int32, opts GetInvoiceOpts,
+	companyID int64, invoiceID int64, opts GetInvoiceOpts,
 ) (*Invoice, *oauth2.Token, error) {
 	var result InvoiceResponse
 	v, err := query.Values(opts)
@@ -555,7 +555,7 @@ func (c *Client) CreateInvoice(
 
 func (c *Client) UpdateInvoice(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	invoiceID int32, params InvoiceUpdateParams,
+	invoiceID int64, params InvoiceUpdateParams,
 ) (*Invoice, *oauth2.Token, error) {
 	var result InvoiceResponse
 	oauth2Token, err := c.call(ctx, path.Join(APIPathInvoices, fmt.Sprint(invoiceID)), http.MethodPut, oauth2Token, nil, params, &result)
@@ -567,7 +567,7 @@ func (c *Client) UpdateInvoice(
 
 func (c *Client) DestroyInvoice(
 	ctx context.Context, oauth2Token *oauth2.Token,
-	companyID uint32, invoiceID int32,
+	companyID int64, invoiceID int64,
 ) (*oauth2.Token, error) {
 	v, err := query.Values(nil)
 	if err != nil {
