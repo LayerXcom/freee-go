@@ -127,7 +127,7 @@ func main() {
 
 ### 仕訳帳
 
-- [ ] GET /api/1/journals ダウンロード要求
+- [x] GET /api/1/journals ダウンロード要求
 - [ ] GET /api/1/journals/reports/{id}/status ステータス確認
 - [ ] GET /api/1/journals/reports/{id}/download ダウンロード実行
 
