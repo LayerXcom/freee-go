@@ -300,7 +300,7 @@ func (c *Client) GetDeal(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodGet, oauth2Token, v, nil, &result)
+	err = c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodGet, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, oauth2Token, err
 	}
@@ -312,8 +312,7 @@ func (c *Client) CreateDeal(
 	params DealCreateParams,
 ) (*Deal, *oauth2.Token, error) {
 	var result DealResponse
-	oauth2Token, err := c.call(ctx, APIPathDeals, http.MethodPost, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, APIPathDeals, http.MethodPost, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.Deal, oauth2Token, nil
@@ -324,8 +323,7 @@ func (c *Client) UpdateDeal(
 	dealID int64, params DealUpdateParams,
 ) (*Deal, *oauth2.Token, error) {
 	var result DealResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodPut, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodPut, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.Deal, oauth2Token, nil
@@ -340,8 +338,7 @@ func (c *Client) DestroyDeal(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodDelete, oauth2Token, v, nil, nil)
-	if err != nil {
+	if err = c.call(ctx, path.Join(APIPathDeals, fmt.Sprint(dealID)), http.MethodDelete, oauth2Token, v, nil, nil); err != nil {
 		return oauth2Token, err
 	}
 

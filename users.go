@@ -60,8 +60,7 @@ func (c *Client) GetUsersMe(
 	if err != nil {
 		return nil, oauth2Token, err
 	}
-	oauth2Token, err = c.call(ctx, path.Join(APIPathUsers, "me"), http.MethodGet, oauth2Token, v, nil, &result)
-	if err != nil {
+	if err = c.call(ctx, path.Join(APIPathUsers, "me"), http.MethodGet, oauth2Token, v, nil, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result, oauth2Token, nil
