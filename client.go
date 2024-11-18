@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"time"
 
 	"golang.org/x/oauth2"
 )
@@ -29,6 +30,7 @@ type Config struct {
 	APIEndpoint string
 	Log         Logger
 	Oauth2      *oauth2.Config
+	EarlyExpiry *time.Duration
 }
 
 func NewConfig(clientID, clientSecret, redirectURL string) *Config {
@@ -157,6 +159,9 @@ func (c *Client) do(
 	res interface{},
 ) (*oauth2.Token, error) {
 	tokenSource := c.config.Oauth2.TokenSource(ctx, oauth2Token)
+	if c.config.EarlyExpiry != nil {
+		tokenSource = oauth2.ReuseTokenSourceWithExpiry(oauth2Token, tokenSource, *c.config.EarlyExpiry)
+	}
 	httpClient := oauth2.NewClient(ctx, tokenSource)
 	response, err := httpClient.Do(req)
 	if err != nil {
