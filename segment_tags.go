@@ -72,8 +72,7 @@ func (c *Client) GetSegmentTags(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags"), http.MethodGet, oauth2Token, v, nil, &result)
-	if err != nil {
+	if err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags"), http.MethodGet, oauth2Token, v, nil, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 
@@ -85,8 +84,7 @@ func (c *Client) CreateSegmentTag(
 	segmentID int64, params SegmentTagParams,
 ) (*SegmentTag, *oauth2.Token, error) {
 	var result SegmentTagResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags"), http.MethodPost, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags"), http.MethodPost, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.SegmentTag, oauth2Token, nil
@@ -98,8 +96,7 @@ func (c *Client) UpdateSegmentTag(
 	params SegmentTagParams,
 ) (*SegmentTag, *oauth2.Token, error) {
 	var result SegmentTagResponse
-	oauth2Token, err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags", fmt.Sprint(id)), http.MethodPut, oauth2Token, nil, params, &result)
-	if err != nil {
+	if err := c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags", fmt.Sprint(id)), http.MethodPut, oauth2Token, nil, params, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result.SegmentTag, oauth2Token, nil
@@ -115,8 +112,7 @@ func (c *Client) DestroySegmentTag(
 		return oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags", fmt.Sprint(id)), http.MethodDelete, oauth2Token, v, nil, nil)
-	if err != nil {
+	if err = c.call(ctx, path.Join(APIPathSegments, fmt.Sprint(segmentID), "tags", fmt.Sprint(id)), http.MethodDelete, oauth2Token, v, nil, nil); err != nil {
 		return oauth2Token, err
 	}
 

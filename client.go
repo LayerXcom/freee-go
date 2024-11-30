@@ -67,7 +67,7 @@ func (c *Client) call(ctx context.Context,
 	oauth2Token *oauth2.Token,
 	queryParams url.Values, postBody interface{},
 	res interface{},
-) (*oauth2.Token, error) {
+) error {
 	var (
 		contentType string
 		body        io.Reader
@@ -76,14 +76,14 @@ func (c *Client) call(ctx context.Context,
 		contentType = "application/json"
 		jsonParams, err := json.Marshal(postBody)
 		if err != nil {
-			return oauth2Token, err
+			return err
 		}
 		body = bytes.NewBuffer(jsonParams)
 	}
 
 	req, err := c.newRequest(ctx, apiPath, method, contentType, queryParams, body)
 	if err != nil {
-		return oauth2Token, err
+		return err
 	}
 	return c.do(ctx, oauth2Token, req, res)
 }
@@ -94,7 +94,7 @@ func (c *Client) postFiles(ctx context.Context,
 	queryParams url.Values, postBody map[string]string,
 	fileName string, file []byte,
 	res interface{},
-) (*oauth2.Token, error) {
+) error {
 	var (
 		contentType string
 		body        = &bytes.Buffer{}
@@ -102,24 +102,24 @@ func (c *Client) postFiles(ctx context.Context,
 	mw := multipart.NewWriter(body)
 	fw, err := mw.CreateFormFile("receipt", fileName)
 	if err != nil {
-		return oauth2Token, err
+		return err
 	}
 	if _, err := io.Copy(fw, bytes.NewReader(file)); err != nil {
-		return oauth2Token, err
+		return err
 	}
 	for k, v := range postBody {
-		if err := mw.WriteField(k, v); err != nil {
-			return oauth2Token, err
+		if err = mw.WriteField(k, v); err != nil {
+			return err
 		}
 	}
 	contentType = mw.FormDataContentType()
-	if err := mw.Close(); err != nil {
-		return oauth2Token, err
+	if err = mw.Close(); err != nil {
+		return err
 	}
 
 	req, err := c.newRequest(ctx, apiPath, method, contentType, queryParams, body)
 	if err != nil {
-		return oauth2Token, err
+		return err
 	}
 	return c.do(ctx, oauth2Token, req, res)
 }
@@ -157,7 +157,7 @@ func (c *Client) do(
 	oauth2Token *oauth2.Token,
 	req *http.Request,
 	res interface{},
-) (*oauth2.Token, error) {
+) error {
 	tokenSource := c.config.Oauth2.TokenSource(ctx, oauth2Token)
 	if c.config.EarlyExpiry != nil {
 		tokenSource = oauth2.ReuseTokenSourceWithExpiry(oauth2Token, tokenSource, *c.config.EarlyExpiry)
@@ -174,7 +174,7 @@ func (c *Client) do(
 			if e.Response != nil {
 				resp.StatusCode = e.Response.StatusCode
 			}
-			return oauth2Token, resp
+			return resp
 		}
 		errURL := &url.Error{}
 		if errors.As(err, &errURL) {
@@ -183,7 +183,7 @@ func (c *Client) do(
 				err = v
 			}
 		}
-		return oauth2Token, err
+		return err
 	}
 	defer response.Body.Close()
 	c.logf("[freee] %s: %s", HeaderXFreeeRequestID, response.Header.Get(HeaderXFreeeRequestID))
@@ -215,18 +215,18 @@ func (c *Client) do(
 			var e UnauthorizedError
 			if err := json.NewDecoder(bytes.NewReader(byt)).Decode(&e); err != nil {
 				c.logf("[freee] HTTP response body: %v", err)
-				return oauth2Token, res
+				return res
 			}
 			if e.Code == UnauthorizedCodeInvalidAccessToken ||
 				e.Code == UnauthorizedCodeExpiredAccessToken {
 				res.IsAuthorizationRequired = true
 			}
 		}
-		return oauth2Token, res
+		return res
 	}
 
 	if res == nil {
-		return oauth2Token, nil
+		return nil
 	}
-	return oauth2Token, json.NewDecoder(r).Decode(&res)
+	return json.NewDecoder(r).Decode(&res)
 }

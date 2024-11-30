@@ -85,8 +85,7 @@ func (c *Client) CreateReceipt(
 		"issue_date":  params.IssueDate,
 	}
 	var result ReceiptResponse
-	oauth2Token, err := c.postFiles(ctx, APIPathReceipts, http.MethodPost, oauth2Token, nil, postBody, receiptName, params.Receipt, &result)
-	if err != nil {
+	if err := c.postFiles(ctx, APIPathReceipts, http.MethodPost, oauth2Token, nil, postBody, receiptName, params.Receipt, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result, oauth2Token, nil
@@ -102,8 +101,7 @@ func (c *Client) GetReceipt(
 		return nil, oauth2Token, err
 	}
 	SetCompanyID(&v, companyID)
-	oauth2Token, err = c.call(ctx, path.Join(APIPathReceipts, fmt.Sprint(receiptID)), http.MethodGet, oauth2Token, v, nil, &result)
-	if err != nil {
+	if err = c.call(ctx, path.Join(APIPathReceipts, fmt.Sprint(receiptID)), http.MethodGet, oauth2Token, v, nil, &result); err != nil {
 		return nil, oauth2Token, err
 	}
 	return &result, oauth2Token, nil
