@@ -55,11 +55,27 @@ type Client struct {
 	config     *Config
 }
 
-// NewClient returns a new freee API client.
-func NewClient(config *Config) *Client {
-	return &Client{
-		config: config,
+// ClientOption is an optional configuration for the client.
+type ClientOption func(*Client)
+
+// WithHTTPRoundTripper sets a Bring-Your-Own http.RoundTripper.
+// By default, http.DefaultTransport is set.
+func WithHTTPRoundTripper(roundTripper http.RoundTripper) ClientOption {
+	return func(c *Client) {
+		c.httpClient.Transport = roundTripper
 	}
+}
+
+// NewClient returns a new freee API client.
+func NewClient(config *Config, options ...ClientOption) *Client {
+	client := &Client{
+		httpClient: &http.Client{Transport: http.DefaultTransport},
+		config:     config,
+	}
+	for _, opt := range options {
+		opt(client)
+	}
+	return client
 }
 
 func (c *Client) call(ctx context.Context,
@@ -162,7 +178,7 @@ func (c *Client) do(
 	if c.config.EarlyExpiry != nil {
 		tokenSource = oauth2.ReuseTokenSourceWithExpiry(oauth2Token, tokenSource, *c.config.EarlyExpiry)
 	}
-	httpClient := oauth2.NewClient(ctx, tokenSource)
+	httpClient := oauth2.NewClient(context.WithValue(ctx, oauth2.HTTPClient, c.httpClient), tokenSource)
 	response, err := httpClient.Do(req)
 	if err != nil {
 		e := &oauth2.RetrieveError{}
